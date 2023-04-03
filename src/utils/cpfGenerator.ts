@@ -31,4 +31,4 @@ class CPFGenerator {
   }
 }
 
-export const cpf = new CPFGenerator.generateCPF()
+export const cpf: string = (new CPFGenerator()).generateCPF()
