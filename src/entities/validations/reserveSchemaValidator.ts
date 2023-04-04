@@ -34,6 +34,7 @@ export const ReserveSchemaValidator = z.object({
 
     return true
   }),
+  id_car: z.string().uuid(),
   final_value: z.number().gt(20).lt(1000000)
 })
 

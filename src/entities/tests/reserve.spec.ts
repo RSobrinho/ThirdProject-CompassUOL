@@ -18,6 +18,7 @@ describe('ReserveEntity', () => {
     id_user: v4(),
     start_date: formattedStartDate,
     end_date: formattedEndDate,
+    id_car: v4(),
     final_value: faker.datatype.number({ min: 20, max: 1000000 })
   }
 
