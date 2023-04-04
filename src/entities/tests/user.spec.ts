@@ -4,9 +4,9 @@ import { UserEntity } from '../implementations/user'
 import { format } from 'date-fns'
 import { describe, it, expect } from 'vitest'
 import { IUserEntityProps } from '../validations/userSchemaValidator'
-import 
-import { config } from 'dotenv'
-config()
+import { extraFeatures } from '../../utils/ExtraFeatures'
+import { ValidationError } from '../../errors/validationError'
+
 const randomDate = faker.date.between(((new Date() as unknown as number) - (1000 * 60 * 60 * 24 * 365 * 100)), ((new Date() as unknown as number) - (1000 * 60 * 60 * 24 * 365 * 3)))
 
 const formattedRandomDate = format(randomDate, 'yyyy-MM-dd')
@@ -14,13 +14,18 @@ const formattedRandomDate = format(randomDate, 'yyyy-MM-dd')
 describe('UserEntity', () => {
   const validProps: IUserEntityProps = {
     id: v4(),
-    firstName: faker.name.firstName(),
-    lastName: faker.name.lastName(),
-    birthDate: formattedRandomDate,
-    city: faker.address.city(),
-    country: faker.address.country(),
+    name: faker.name.fullName(),
+    cpf: extraFeatures.generateCPF(),
+    birth: formattedRandomDate,
     email: faker.internet.email(),
-    password: faker.internet.password(12)
+    password: faker.internet.password(6),
+    cep: faker.random.numeric(8),
+    qualified: faker.helpers.arrayElement(['yes', 'no']),
+    patio: faker.address.street(),
+    complement: faker.address.secondaryAddress(),
+    neighborhood: faker.address.street(),
+    locality: faker.address.city(),
+    uf: extraFeatures.generateBrasilianState()
   }
 
   it('should create a valid user', () => {
@@ -28,15 +33,7 @@ describe('UserEntity', () => {
 
     console.log(validUser)
 
-    // expect(validUser).toBeInstanceOf(UserEntity)
-    expect(2 + 2).toBe(4)
-  })
-
-  it('should throw a validation error if an entity is being created with at least 1 invalid property', () => {
-    const invalidUser = () => {
-      return new UserEntity({ ...validProps, firstName: null })
-    }
-
-    expect(invalidUser).toThrow()
+    expect(validUser).toBeInstanceOf(UserEntity)
+    expect(validUser).toHaveProperty('props', validProps)
   })
 })
