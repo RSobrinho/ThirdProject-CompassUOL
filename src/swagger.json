@@ -1,0 +1,26 @@
+
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Terceiro projeto Compass.UOL",
+    "description": "a fazer",
+    "termsOfService": "https://www.google.com.br/search?q=N%C3%A3o+h%C3%A1+%3A%7C",
+    "contact": {
+      "name": "Rafael Sobrinho",
+      "url": "https://www.google.com/search?q=Ainda+n%C3%A3o+tenho+site+pessoal+mas+jaja+crio+um+prometo+%E0%BC%BC+%E3%81%A4+%E2%97%95_%E2%97%95+%E0%BC%BD%E3%81%A4",
+      "email": "rafael.sobrinho.pb@compasso.com.br"
+      },
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:8080/api/v1/",
+        "description": "URL para testar API localmente "
+      },
+      {
+        "url": "http://firstprojectcompassuol-env.eba-epngbm5y.sa-east-1.elasticbeanstalk.com/api/v1/",
+        "description": "URL da API hospedada no AWS Elastic Beanstalk"
+      }
+    ]
+
+  }
