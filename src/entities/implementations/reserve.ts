@@ -1,7 +1,8 @@
-import { v4 } from 'uuid'
 import { ValidationError } from '../../errors/validationError'
 import { validator } from '../validations/Validator'
-import { ReserveSchemaValidator, IReserveEntityProps } from '../validations/reserveSchemaValidator'
+import { ReserveSchemaValidator } from '../validations/reserveSchemaValidator'
+import { IReserveEntityProps } from '../interfaces/iReserveEntityProps'
+import { v4 } from 'uuid'
 
 export class ReserveEntity {
   private props: IReserveEntityProps

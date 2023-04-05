@@ -1,7 +1,8 @@
 import { ValidationError } from '../../errors/validationError'
 import { validator } from '../validations/Validator'
 import { v4 } from 'uuid'
-import { CarSchemaValidator, ICarEntityProps } from '../validations/carSchemaValidator'
+import { CarSchemaValidator } from '../validations/carSchemaValidator'
+import { ICarEntityProps } from '../interfaces/iCarEntityProps'
 
 export class CarEntity {
   private props: ICarEntityProps
@@ -18,5 +19,9 @@ export class CarEntity {
     if (errors) {
       throw new ValidationError('Zod validation errors', errors)
     }
+  }
+
+  get id () {
+    return this.props.id
   }
 }

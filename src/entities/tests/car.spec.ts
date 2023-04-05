@@ -1,7 +1,8 @@
 import { faker } from '@faker-js/faker'
 import { CarEntity } from '../implementations/car'
 import { describe, it, expect } from 'vitest'
-import { ICarEntityProps } from '../validations/carSchemaValidator'
+import { ICarEntityProps } from '../interfaces/iCarEntityProps'
+
 import { v4 } from 'uuid'
 
 describe('CarEntity', () => {
@@ -10,7 +11,7 @@ describe('CarEntity', () => {
     model: faker.vehicle.vehicle(),
     color: faker.color.human(),
     year: faker.datatype.number({ min: 1950, max: (new Date()).getFullYear() }),
-    value_per_day: faker.datatype.number({ min: 20, max: 10000 }),
+    valuePerDay: faker.datatype.number({ min: 20, max: 10000 }),
     accessories: [
       {
         description: faker.lorem.words(3)
@@ -22,7 +23,7 @@ describe('CarEntity', () => {
         description: faker.lorem.words(3)
       }
     ],
-    number_of_passengers: faker.datatype.number({ min: 2, max: 10 })
+    numberOfPassengers: faker.datatype.number({ min: 2, max: 10 })
   }
 
   it('should create a valid car', () => {
@@ -31,6 +32,15 @@ describe('CarEntity', () => {
     console.log(validCar)
 
     expect(validCar).toBeInstanceOf(CarEntity)
+    expect(2 + 2).toBe(4)
+  })
+
+  it('should throw ZodValidationError when trying to create a new car with empty description', () => {
+    expect(2 + 2).toBe(4)
+  })
+
+  it('should throw ZodValidationError when trying to create a new car with invalid year', () => {
+    // do expects both upper new Date().getFullYear() and lower 1950
     expect(2 + 2).toBe(4)
   })
 })

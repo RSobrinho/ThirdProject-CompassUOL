@@ -2,7 +2,10 @@ import express from 'express'
 import swaggerUi from 'swagger-ui-express'
 import swaggerDocs from './swagger.json'
 import mongoose from 'mongoose'
-import BaseRouter from './routes/BaseRouter'
+import BaseRouter from './routes/baseRouter'
+import CarRouter from './routes/carRouter'
+import ReserveRouter from './routes/reserveRouter'
+import UserRouter from './routes/reserveRouter'
 import { errorResponse } from './errors/handler'
 import { config } from 'dotenv'
 import { join } from 'path'
@@ -45,6 +48,9 @@ class App {
 
   private routes () {
     this.express.use('/', BaseRouter)
+    this.express.use('/api/v1/cars', CarRouter)
+    this.express.use('/api/v1/reserves', ReserveRouter)
+    this.express.use('/api/v1/users', UserRouter)
   }
 }
 

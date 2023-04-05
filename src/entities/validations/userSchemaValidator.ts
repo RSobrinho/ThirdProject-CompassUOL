@@ -37,5 +37,3 @@ export const UserSchemaValidator = z.object({
   locality: z.string().min(2).max(60),
   uf: z.string().length(2)
 })
-
-export type IUserEntityProps = z.infer<typeof UserSchemaValidator>

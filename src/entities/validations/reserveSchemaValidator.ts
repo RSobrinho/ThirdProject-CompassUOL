@@ -37,5 +37,3 @@ export const ReserveSchemaValidator = z.object({
   id_car: z.string().uuid(),
   final_value: z.number().gt(20).lt(1000000)
 })
-
-export type IReserveEntityProps = z.infer<typeof ReserveSchemaValidator>
