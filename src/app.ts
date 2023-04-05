@@ -5,7 +5,7 @@ import mongoose from 'mongoose'
 import BaseRouter from './routes/baseRouter'
 import CarRouter from './routes/carRouter'
 import ReserveRouter from './routes/reserveRouter'
-import UserRouter from './routes/reserveRouter'
+import UserRouter from './routes/userRouter'
 import { errorResponse } from './errors/handler'
 import { config } from 'dotenv'
 import { join } from 'path'
@@ -48,9 +48,9 @@ class App {
 
   private routes () {
     this.express.use('/', BaseRouter)
-    this.express.use('/api/v1/cars', CarRouter)
-    this.express.use('/api/v1/reserves', ReserveRouter)
-    this.express.use('/api/v1/users', UserRouter)
+    this.express.use('/api/v1/car', CarRouter)
+    this.express.use('/api/v1/reserve', ReserveRouter)
+    this.express.use('/api/v1/user', UserRouter)
   }
 }
 

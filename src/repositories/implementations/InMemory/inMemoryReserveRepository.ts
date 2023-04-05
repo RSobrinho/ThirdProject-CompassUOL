@@ -1,5 +1,5 @@
 import { ReserveEntity } from '../../../entities/implementations/reserve'
-import { IReserveRepository } from '../../interfaces/MongoDB/iReserveRepository'
+import { IReserveRepository } from '../../interfaces/iReserveRepository'
 
 export class InMemoryUserRepository implements IReserveRepository {
   private reserves: ReserveEntity[]

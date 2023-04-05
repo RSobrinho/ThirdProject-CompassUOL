@@ -1,5 +1,6 @@
 export interface createCarDTO {
- model: string,
+ _id?: string,
+  model: string,
  color: string,
  year: number,
  valuePerDay: number,

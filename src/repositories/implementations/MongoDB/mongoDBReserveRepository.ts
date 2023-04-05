@@ -1,4 +1,4 @@
-import { IReserveRepository } from '../../interfaces/MongoDB/iReserveRepository'
+import { IReserveRepository } from '../../interfaces/iReserveRepository'
 import ReserveSchema from '../../../databases/MongoDB/reserveSchema'
 import { ReserveEntity } from '../../../entities/implementations/reserve'
 

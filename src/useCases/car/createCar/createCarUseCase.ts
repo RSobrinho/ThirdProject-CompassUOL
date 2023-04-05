@@ -1,7 +1,6 @@
 import { CarEntity } from '../../../entities/implementations/car'
-import { ICarEntityProps } from '../../../entities/interfaces/iCarEntityProps'
 import { ValidationError } from '../../../errors/validationError'
-import { ICarRepository } from '../../../repositories/interfaces/MongoDB/iCarRepository'
+import { ICarRepository } from '../../../repositories/interfaces/iCarRepository'
 import { createCarDTO } from './createCarDTO'
 export class CreateCarUseCase {
   constructor (private carRepository: ICarRepository) {}
@@ -11,14 +10,13 @@ export class CreateCarUseCase {
 
     for (let i = 0; i < accessories.length; i++) {
       for (let j = 0; j < accessories.length; j++) {
-        if (accessories[i].description === accessories[j].description) {
-          throw new ValidationError('ValidationError')
+        if (accessories[i].description === accessories[j].description && i !== j) {
+          throw new ValidationError('ValidationError -> Accessories cannot be equal')
         }
       }
     }
 
     await this.carRepository.save(newCar)
-
     return newCar
   }
 }

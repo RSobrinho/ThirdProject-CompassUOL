@@ -1,13 +1,14 @@
 import { faker } from '@faker-js/faker'
-import { describe, it, expect } from 'vitest'
-
+import { describe, it, expect, vi, beforeAll } from 'vitest'
 import { v4 } from 'uuid'
 import { createCarDTO } from './createCarDTO'
 import { CarEntity } from '../../../entities/implementations/car'
 import { InMemoryCarRepository } from '../../../repositories/implementations/InMemory/inMemoryCarRepository'
 import { CreateCarUseCase } from './createCarUseCase'
+import { ValidationError } from '../../../errors/validationError'
+import { CreateCarController } from './createCarController'
 
-describe('createCarUseCase', () => {
+describe('CreateCarFeature', () => {
   const validProps: createCarDTO = {
     model: faker.vehicle.vehicle(),
     color: faker.color.human(),
@@ -15,42 +16,50 @@ describe('createCarUseCase', () => {
     valuePerDay: faker.datatype.number({ min: 20, max: 10000 }),
     accessories: [
       {
-        description: faker.lorem.words(3)
+        description: faker.lorem.words(2)
       },
       {
-        description: faker.lorem.words(3)
+        description: faker.lorem.words(2)
       },
       {
-        description: faker.lorem.words(3)
+        description: faker.lorem.words(2)
       }
     ],
     numberOfPassengers: faker.datatype.number({ min: 2, max: 10 })
   }
 
-  it('should create a car and return the created car', async () => {
-    const carRepository = new InMemoryCarRepository()
-    const createCarUseCase = new CreateCarUseCase(carRepository)
+  let carRepository: InMemoryCarRepository
+  let createCarUseCase: CreateCarUseCase
+  let createCarController: CreateCarController
 
-    const car = await createCarUseCase.execute(validProps)
-
-    // expect(car).toHaveProperty()
-
-    // criar um mock que pegue esse execute, e faça a execução que retorne uma entidade CarEntity
-
-    console.log(validCar)
-
-    expect(validCar).toBeInstanceOf(CarEntity)
+  beforeAll(() => {
+    carRepository = new InMemoryCarRepository()
+    createCarUseCase = new CreateCarUseCase(carRepository)
+    createCarController = new CreateCarController(createCarUseCase)
   })
 
-  it('should throw ValidationError when trying to create a new car with 2 equals descriptions', () => {
-    const invalidProps = validProps
-    invalidProps.accessories.push({ description: 'DescRepeated' })
-    invalidProps.accessories.push({ description: 'DescRepeated' })
+  it('should create a car successfully', async () => {
+    const car = await createCarUseCase.execute(validProps)
 
-    const invalidCar = () => {
-      return new CarEntity(invalidProps)
+    const req: any = { body: validProps }
+    const res: any = {
+      json: vi.fn().mockReturnThis(),
+      status: vi.fn().mockReturnThis()
     }
 
-    expect(invalidCar).toThrow()
+    await createCarController.handle(req, res)
+
+    expect(car).toBeInstanceOf(CarEntity)
+    expect(carRepository.cars).toContain(car)
+    expect(res.status).toHaveBeenCalledWith(201)
+    expect(res.json).toHaveBeenCalled()
+  })
+
+  it('should throw ValidationError when trying to create a new car with 2 equals descriptions', async () => {
+    const invalidProps = { ...validProps }
+    invalidProps.accessories.push({ description: 'DescRepeated' })
+    invalidProps.accessories.push({ description: 'DescRepeated' })
+
+    await expect(createCarUseCase.execute(invalidProps)).rejects.toThrowError(ValidationError)
   })
 })

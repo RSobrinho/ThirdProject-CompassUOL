@@ -44,7 +44,6 @@ class ExtraFeatures {
       return false
     }
 
-    console.log('CPF valid')
     return true
   }
 

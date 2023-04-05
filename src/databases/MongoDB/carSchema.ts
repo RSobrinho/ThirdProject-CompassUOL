@@ -8,6 +8,7 @@ interface ICarSchema extends Document {
   value_per_day: number,
   accessories: [
     {
+      _id: string
       description: string
     }
   ],
@@ -22,10 +23,11 @@ const CarSchema = new Schema({
   value_per_day: Number,
   accessories: [
     {
+      _id: String,
       description: String
     }
   ],
   number_of_passengers: Number
 })
 
-export default model<ICarSchema>('Reserve', CarSchema)
+export default model<ICarSchema>('Car', CarSchema)

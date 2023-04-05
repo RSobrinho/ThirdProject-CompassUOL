@@ -3,11 +3,8 @@ import { CarEntity } from '../implementations/car'
 import { describe, it, expect } from 'vitest'
 import { ICarEntityProps } from '../interfaces/iCarEntityProps'
 
-import { v4 } from 'uuid'
-
 describe('CarEntity', () => {
   const validProps: ICarEntityProps = {
-    id: v4(),
     model: faker.vehicle.vehicle(),
     color: faker.color.human(),
     year: faker.datatype.number({ min: 1950, max: (new Date()).getFullYear() }),
@@ -27,20 +24,17 @@ describe('CarEntity', () => {
   }
 
   it('should create a valid car', () => {
-    const validCar = new CarEntity(validProps)
-
-    console.log(validCar)
-
-    expect(validCar).toBeInstanceOf(CarEntity)
-    expect(2 + 2).toBe(4)
+    expect(new CarEntity(validProps)).toBeInstanceOf(CarEntity)
   })
 
-  it('should throw ZodValidationError when trying to create a new car with empty description', () => {
-    expect(2 + 2).toBe(4)
-  })
+  it('should throw an error if at least 1 property is invalid', () => {
+    const invalidCar = () => {
+      return new CarEntity({
+        ...validProps,
+        numberOfPassengers: 0
+      })
+    }
 
-  it('should throw ZodValidationError when trying to create a new car with invalid year', () => {
-    // do expects both upper new Date().getFullYear() and lower 1950
-    expect(2 + 2).toBe(4)
+    expect(invalidCar).toThrowError()
   })
 })

@@ -1,4 +1,4 @@
-import { IUserRepository } from '../../interfaces/MongoDB/iUserRepository'
+import { IUserRepository } from '../../interfaces/iUserRepository'
 import UserSchema from '../../../databases/MongoDB/userSchema'
 import { UserEntity } from '../../../entities/implementations/user'
 
