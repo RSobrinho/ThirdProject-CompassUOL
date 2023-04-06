@@ -1,7 +1,7 @@
 import { IAccessoryEntityProps } from './iAccessoryProps'
 
 export interface ICarEntityProps{
-  id?: string,
+  _id?: string,
   model?: string,
   color?: string,
   year?: number,

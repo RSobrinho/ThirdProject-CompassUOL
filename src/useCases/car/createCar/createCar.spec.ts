@@ -38,7 +38,7 @@ describe('CreateCarFeature', () => {
     createCarController = new CreateCarController(createCarUseCase)
   })
 
-  it('should create a car successfully', async () => {
+  it('should create a car successfully and send status 201', async () => {
     const car = await createCarUseCase.execute(validProps)
 
     const req: any = { body: validProps }
@@ -48,6 +48,8 @@ describe('CreateCarFeature', () => {
     }
 
     await createCarController.handle(req, res)
+
+    console.log(JSON.stringify(car))
 
     expect(car).toBeInstanceOf(CarEntity)
     expect(carRepository.cars).toContain(car)
