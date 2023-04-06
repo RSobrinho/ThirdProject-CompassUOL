@@ -8,7 +8,7 @@ import { GetAllCarsController } from './getAllCarsController'
 import { GetAllCarsDTO } from './getAllCarsDTO'
 import { cars } from '../../../utils/fakeData/cars'
 
-describe('CreateCarFeature', () => {
+describe('GetAllCarsFeature', () => {
   const validProps: GetAllCarsDTO = {
     page: `${faker.datatype.number({ min: 0, max: 5 })}`,
     limit: `${faker.datatype.number({ min: 0, max: 20 })}`,
