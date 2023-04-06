@@ -3,19 +3,53 @@ import { CarEntity } from '../../../entities/implementations/car'
 import { ICarRepository } from '../../interfaces/iCarRepository'
 
 export class InMemoryCarRepository implements ICarRepository {
-  public cars: CarEntity[] = []
+  public cars: ICarEntityProps[] = []
 
   async save (car: CarEntity): Promise<void> {
     this.cars.push(car)
   }
 
-  async findById (_id: string): Promise<object> {
-    this.cars.forEach(car => {
-      if (car.id === _id) {
+  async deleteById (id: string): Promise<boolean> {
+    const car = this.getById(id)
+
+    // if(Object.keys(car).length === 0) {
+    //   return false
+    // } else {
+    //   return true
+    // }
+    for (let index = 0; index < this.cars.length; index++) {
+      const car = this.cars[index]
+
+      // eslint-disable-next-line eqeqeq
+      if (car._id == id) {
+        this.cars = this.cars.splice(index, 1)
+        return true
+      }
+    }
+    return false
+  }
+
+  async getById (id: string): Promise<object> {
+    for (let index = 0; index < this.cars.length; index++) {
+      const car = this.cars[index]
+
+      // eslint-disable-next-line eqeqeq
+      if (car._id == id) {
         return car
       }
-    })
+    }
     return {}
+  }
+
+  async updateById ({ _id, ...props }): Promise<object> {
+    if (Object.keys(props).length === 0) {
+      return {}
+    } else {
+      const index = this.cars.findIndex(car => car._id === _id)
+
+      this.cars[index] = props
+      return this.cars[index]
+    }
   }
 
   async findByFilter ({ limit = 10, page = 1, ...data }: {limit?: number, page?: number, data?: ICarEntityProps}): Promise<object> {

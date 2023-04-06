@@ -8,8 +8,24 @@ export class MongoDBCarRepository implements ICarRepository {
     await CarSchema.create(car)
   }
 
-  async findById (id: string): Promise<object | null> {
-    return await CarSchema.findById(id)
+  async getById (id: string): Promise<object> {
+    return await CarSchema.findById(id).select('-__v')
+  }
+
+  async updateById ({ _id, ...props }): Promise<object> {
+    await CarSchema.updateOne({ _id }, props)
+    return await CarSchema.findByIdAndUpdate(_id, props)
+  }
+
+  async deleteById (id: string): Promise<boolean> {
+    let deleted = false
+    const carDeleted = await CarSchema.findByIdAndDelete(id)
+
+    if (carDeleted !== null) {
+      deleted = true
+    }
+
+    return deleted
   }
 
   async findByFilter (data: { page?: number; limit?: number } & ICarEntityProps): Promise<object> {

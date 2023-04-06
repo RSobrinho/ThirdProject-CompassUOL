@@ -1,6 +1,5 @@
 import { faker } from '@faker-js/faker'
 import { describe, it, expect, vi, beforeAll } from 'vitest'
-import { v4 } from 'uuid'
 import { createCarDTO } from './createCarDTO'
 import { CarEntity } from '../../../entities/implementations/car'
 import { InMemoryCarRepository } from '../../../repositories/implementations/InMemory/inMemoryCarRepository'
@@ -48,8 +47,6 @@ describe('CreateCarFeature', () => {
     }
 
     await createCarController.handle(req, res)
-
-    console.log(JSON.stringify(car))
 
     expect(car).toBeInstanceOf(CarEntity)
     expect(carRepository.cars).toContain(car)

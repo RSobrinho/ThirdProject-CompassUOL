@@ -31,8 +31,6 @@ describe('UserEntity', () => {
   it('should create a valid user', () => {
     const validUser = new UserEntity(validProps)
 
-    console.log(validUser)
-
     expect(validUser).toBeInstanceOf(UserEntity)
     expect(validUser).toHaveProperty('props', validProps)
   })

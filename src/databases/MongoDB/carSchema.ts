@@ -5,14 +5,14 @@ interface ICarSchema extends Document {
   model: string,
   color: string,
   year: number,
-  value_per_day: number,
+  valuePerDay: number,
   accessories: [
     {
       _id: string
       description: string
     }
   ],
-  number_of_passengers: number
+  numberOfPassengers: number
 }
 
 const CarSchema = new Schema({
@@ -20,14 +20,14 @@ const CarSchema = new Schema({
   model: String,
   color: String,
   year: Number,
-  value_per_day: Number,
+  valuePerDay: Number,
   accessories: [
     {
       _id: String,
       description: String
     }
   ],
-  number_of_passengers: Number
+  numberOfPassengers: Number
 })
 
 export default model<ICarSchema>('Car', CarSchema)

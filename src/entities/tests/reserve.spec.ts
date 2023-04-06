@@ -25,8 +25,6 @@ describe('ReserveEntity', () => {
   it('should create a valid reserve', () => {
     const validReserve = new ReserveEntity(validProps)
 
-    console.log(validReserve)
-
     expect(validReserve).toBeInstanceOf(ReserveEntity)
   })
 })

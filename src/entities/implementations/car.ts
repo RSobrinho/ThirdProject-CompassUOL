@@ -6,13 +6,13 @@ import { ICarEntityProps } from '../interfaces/iCarEntityProps'
 import { IAccessoryEntityProps } from '../interfaces/iAccessoryProps'
 
 export class CarEntity {
-  private _id: string
-  private model: string
-  private color: string
-  private year: number
-  private valuePerDay: number
-  private accessories: IAccessoryEntityProps[]
-  private numberOfPassengers: number
+  _id: string
+  model: string
+  color: string
+  year: number
+  valuePerDay: number
+  accessories: IAccessoryEntityProps[]
+  numberOfPassengers: number
 
   constructor (props: ICarEntityProps) {
     Object.assign(this, props)
@@ -28,6 +28,8 @@ export class CarEntity {
     const errors = validator.validate(CarSchemaValidator, { ...this })
 
     if (errors) {
+      console.log(errors)
+
       throw new ValidationError('Zod validation errors', errors)
     }
   }
