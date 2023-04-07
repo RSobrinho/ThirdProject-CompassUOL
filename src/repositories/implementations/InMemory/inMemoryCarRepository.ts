@@ -12,16 +12,10 @@ export class InMemoryCarRepository implements ICarRepository {
   async deleteById (id: string): Promise<boolean> {
     const car = this.getById(id)
 
-    // if(Object.keys(car).length === 0) {
-    //   return false
-    // } else {
-    //   return true
-    // }
     for (let index = 0; index < this.cars.length; index++) {
       const car = this.cars[index]
 
-      // eslint-disable-next-line eqeqeq
-      if (car._id == id) {
+      if (car._id === id) {
         this.cars = this.cars.splice(index, 1)
         return true
       }
@@ -33,8 +27,7 @@ export class InMemoryCarRepository implements ICarRepository {
     for (let index = 0; index < this.cars.length; index++) {
       const car = this.cars[index]
 
-      // eslint-disable-next-line eqeqeq
-      if (car._id == id) {
+      if (car._id === id) {
         return car
       }
     }

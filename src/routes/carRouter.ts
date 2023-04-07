@@ -5,6 +5,7 @@ import { createCarController } from '../useCases/car/createCar/'
 import { getAllCarsController } from '../useCases/car/getAllCars'
 import { getCarController } from '../useCases/car/getCar'
 import { updateCarController } from '../useCases/car/updateCar'
+import { updateAccessoryController } from '../useCases/car/updateAccessory'
 
 const router = Router()
 
@@ -27,4 +28,8 @@ router.route('/:id')
     return deleteCarController.handle(request, response)
   }))
 
+router.route('/:id/accessories/:id')
+  .patch(asyncHandler((request: Request, response: Response) => {
+    return updateAccessoryController.handle(request, response)
+  }))
 export default router

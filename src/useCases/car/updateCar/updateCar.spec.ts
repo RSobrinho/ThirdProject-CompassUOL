@@ -47,8 +47,6 @@ describe('UpdateCarFeature', () => {
 
     const updatedProps = { ...validProps, color: 'black', year: 1955, valuePerDay: 1000 }
 
-    console.log(carRepository.cars[0], updatedProps)
-
     const car: any = await updateCarUseCase.execute(updatedProps)
     await updateCarController.handle(req, res)
 
