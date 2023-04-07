@@ -8,6 +8,6 @@ export class UpdateAccessoryController {
     const params = req.path.split('/')
     const carWithUpdatedAccessory = await this.updateAccessoryUseCase.execute({ _idCar: params[1], _idAccessory: params[3], description: req.body.description })
 
-    return res.status(200).json({ status: 'Success', message: 'Car updated successfully', carWithUpdatedAccessory })
+    return res.status(200).json({ status: 'Success', message: 'Car accessories updated successfully', carWithUpdatedAccessory })
   }
 }
