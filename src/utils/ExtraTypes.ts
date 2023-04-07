@@ -1,7 +1,7 @@
-// import { IUserSchema } from '../../Models/UserModel'
+import { IUserEntityProps } from '../entities/interfaces/iUserEntityProps'
 
-// declare module 'express-serve-static-core' {
-//   interface Request {
-//     user: IUserSchema
-//   }
-// }
+declare module 'express-serve-static-core' {
+  interface Request {
+    user: IUserEntityProps
+  }
+}
