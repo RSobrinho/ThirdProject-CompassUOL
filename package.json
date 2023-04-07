@@ -23,6 +23,7 @@
   "homepage": "https://github.com/RSobrinho/ThirdProject-CompassUOL#readme",
   "dependencies": {
     "@faker-js/faker": "^7.6.0",
+    "axios": "^1.3.5",
     "date-fns": "^2.29.3",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",

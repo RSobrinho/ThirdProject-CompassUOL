@@ -21,6 +21,7 @@ export class UpdateAccessoryUseCase {
     for (let i = 0; i < carToUpdate.accessories.length; i++) {
       if (carToUpdate.accessories[i]._id === _idAccessory) {
         if (carToUpdate.accessories[i].description === description) {
+          // deletar o tal acessorio ao inves de jogar esse erro
           throw new ValidationError('ValidationError -> Cannot update description because they are already the same')
         }
         carToUpdate.accessories[i].description = description

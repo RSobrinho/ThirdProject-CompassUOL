@@ -1,6 +1,7 @@
-export interface IUserEntityProps {
+export interface GetAllUsersDTO {
+  page?: string,
+  limit?: string,
   _id?: string,
-  name?: string,
   cpf?: string,
   birth?: string,
   email?: string,
@@ -8,7 +9,7 @@ export interface IUserEntityProps {
   cep?: string,
   qualified?: string,
   patio?: string,
+  complement?: string,
   neighborhood?: string,
-  locality?: string,
   uf?: string
 }

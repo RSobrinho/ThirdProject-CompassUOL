@@ -28,8 +28,6 @@ export class CarEntity {
     const errors = validator.validate(CarSchemaValidator, { ...this })
 
     if (errors) {
-      console.log(errors)
-
       throw new ValidationError('Zod validation errors', errors)
     }
   }

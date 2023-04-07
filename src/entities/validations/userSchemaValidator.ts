@@ -31,9 +31,15 @@ export const UserSchemaValidator = z.object({
   password: z.string().min(6).max(40),
   cep: z.string().min(8).max(10),
   qualified: z.enum(['yes', 'no']),
-  patio: z.string().min(2).max(60),
-  complement: z.string().min(2).max(60),
-  neighborhood: z.string().min(2).max(60),
-  locality: z.string().min(2).max(60),
-  uf: z.string().length(2)
+  patio: z.string().max(60),
+  complement: z.string().max(60),
+  neighborhood: z.string().max(60),
+  locality: z.string().max(60),
+  uf: z.string().length(2).refine((uf) => {
+    if (extraFeatures.validateBrasilianState(uf.toUpperCase())) {
+      return true
+    } else {
+      throw new ValidationError('Brasilian state invalid')
+    }
+  })
 })
