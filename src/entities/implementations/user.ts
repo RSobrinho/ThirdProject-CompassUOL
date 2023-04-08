@@ -24,10 +24,12 @@ export class UserEntity {
       this._id = v4()
     }
 
-    const errors = validator.validate(UserSchemaValidator, { ...this })
+    const data = validator.validate(UserSchemaValidator, { ...this })
 
-    if (errors) {
-      throw new ValidationError('Zod validation errors', errors)
+    if (data.success === false) {
+      throw new ValidationError('Zod validation errors', data)
+    } else {
+      Object.assign(this, data)
     }
   }
 }

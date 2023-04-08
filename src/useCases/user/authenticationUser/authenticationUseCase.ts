@@ -2,9 +2,7 @@ import { IUserRepository } from '../../../repositories/interfaces/iUserRepositor
 import { IAuthenticationDTO } from './authenticationDTO'
 import { AuthError } from '../../../errors/authError'
 import { verify } from 'jsonwebtoken'
-import { config } from 'dotenv'
-import { IUserEntityProps } from '../../../entities/interfaces/iUserEntityProps'
-config()
+import { IUserEntityProps } from 'entities/interfaces/iUserEntityProps'
 
 interface jwtDecoded {
   _id: string,
@@ -16,7 +14,7 @@ export class AuthenticationUseCase {
   constructor (private usersRepository: IUserRepository) {
   }
 
-  public async execute ({ headerAuth }: IAuthenticationDTO): Promise<void> {
+  public async execute ({ headerAuth }: IAuthenticationDTO): Promise<IUserEntityProps> {
     let token: string
     if (
       headerAuth &&
@@ -29,13 +27,12 @@ export class AuthenticationUseCase {
     }
 
     const decoded = (await verify(token, process.env.JWT_SECRET)) as jwtDecoded
-
-    console.log(decoded)
-
     const currentUser = await this.usersRepository.findByData({ _id: decoded._id })
 
     if (!currentUser) {
       throw new AuthError('The user belonging to this token does no longer exist.')
     }
+
+    return currentUser
   }
 }

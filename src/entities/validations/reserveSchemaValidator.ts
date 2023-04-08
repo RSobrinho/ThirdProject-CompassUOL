@@ -3,37 +3,37 @@ import { z } from 'zod'
 import { ValidationError } from '../../errors/validationError'
 
 export const ReserveSchemaValidator = z.object({
-  id: z.string().uuid(),
-  id_user: z.string().uuid(),
-  start_date: z.string().refine((d) => {
-    const minDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate())
-    const startDate = new Date(parseInt(d.slice(6, 10)), parseInt(d.slice(3, 5)), parseInt(d.slice(0, 3)))
+  _id: z.string().uuid(),
+  idUser: z.string().uuid(),
+  startDate: z.string().transform((stringDate) => {
+    const arrayDate = stringDate.split('/')
+    const date = new Date(parseInt(arrayDate[2]), parseInt(arrayDate[1]) - 1, parseInt(arrayDate[0]))
+    return date
+  }).refine((startDate) => {
+    const minDate = new Date()
+    minDate.setHours(0, 0, 0, 0)
 
     if (!isValid(startDate)) {
-      throw new ValidationError('start_date validation error')
+      throw new ValidationError('startDate validation error')
     }
 
-    if (isAfter(minDate, startDate)) {
-      throw new ValidationError('start_date validation error')
+    if (startDate < minDate) {
+      throw new ValidationError('startDate validation error')
     }
 
     return true
   }),
-  end_date: z.string().refine((d) => {
-    const endDate = new Date(parseInt(d.slice(6, 10)), parseInt(d.slice(3, 5)), parseInt(d.slice(0, 3)))
-
-    const maxDate = new Date(new Date().getFullYear() + 3, new Date().getMonth(), new Date().getDate())
-
+  endDate: z.string().transform((stringDate) => {
+    const arrayDate = stringDate.split('/')
+    const date = new Date(parseInt(arrayDate[2]), parseInt(arrayDate[1]) - 1, parseInt(arrayDate[0]))
+    return date
+  }).refine((endDate) => {
     if (!isValid(endDate)) {
-      throw new ValidationError('end_date validation error')
-    }
-
-    if (isAfter(endDate, maxDate)) {
-      throw new ValidationError('end_date validation error')
+      throw new ValidationError('endDate validation error')
     }
 
     return true
   }),
-  id_car: z.string().uuid(),
-  final_value: z.number().gt(20).lt(1000000)
+  idCar: z.string().uuid(),
+  finalValue: z.number().gt(20).lt(1000000)
 })

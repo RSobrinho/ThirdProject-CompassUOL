@@ -5,19 +5,26 @@ import { IReserveEntityProps } from '../interfaces/iReserveEntityProps'
 import { v4 } from 'uuid'
 
 export class ReserveEntity {
-  private props: IReserveEntityProps
+  _id: string
+  idUser: string
+  startDate: string | Date
+  endDate: string | Date
+  idCar: string
+  finalValue: number
 
   constructor (props: IReserveEntityProps) {
-    this.props = props
+    Object.assign(this, props)
 
-    if (!this.props.id) {
-      this.props.id = v4()
+    if (!this._id) {
+      this._id = v4()
     }
 
-    const errors = validator.validate(ReserveSchemaValidator, this.props)
+    const data = validator.validate(ReserveSchemaValidator, { ...this })
 
-    if (errors) {
-      throw new ValidationError('Zod validation errors', errors)
+    if (data.success === false) {
+      throw new ValidationError('Zod validation errors', data)
+    } else {
+      Object.assign(this, data)
     }
   }
 }

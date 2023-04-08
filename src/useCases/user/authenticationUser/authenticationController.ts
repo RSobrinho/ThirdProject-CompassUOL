@@ -6,7 +6,7 @@ export class AuthenticationController {
   }
 
   async handle (req: Request, res: Response, next: NextFunction): Promise<void> {
-    await this.authenticationUseCase.execute({ headerAuth: req.headers.authorization })
+    req.user = await this.authenticationUseCase.execute({ headerAuth: req.headers.authorization })
 
     return next()
   }

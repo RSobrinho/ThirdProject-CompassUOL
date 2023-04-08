@@ -8,6 +8,10 @@ export class MongoDBCarRepository implements ICarRepository {
     await CarSchema.create(car)
   }
 
+  async findByData (props: ICarEntityProps): Promise<ICarEntityProps> {
+    return await CarSchema.findOne(props)
+  }
+
   async getById (id: string): Promise<object> {
     return await CarSchema.findById(id).select('-__v')
   }

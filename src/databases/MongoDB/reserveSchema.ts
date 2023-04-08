@@ -2,25 +2,26 @@ import { Schema, model, Document, Types } from 'mongoose'
 
 interface IReserveSchema extends Document {
   _id: Schema.Types.Mixed,
-  id_user: string,
-  start_date: string,
-  end_date: string,
-  id_car: string,
-  final_value: number
+  idUser: Schema.Types.Mixed,
+  startDate: Date,
+  endDate: Date,
+  idCar: Schema.Types.Mixed,
+  finalValue: number
 }
 
 const ReserveSchema = new Schema({
   _id: Schema.Types.Mixed,
-  id_user: {
-    type: Types.ObjectId,
+  idUser: {
+    type: Schema.Types.Mixed,
     ref: 'User'
   },
-  start_date: String,
-  id_car: {
-    type: Types.ObjectId,
+  startDate: Date,
+  endDate: Date,
+  idCar: {
+    type: Schema.Types.Mixed,
     ref: 'Car'
   },
-  final_value: Number
+  finalValue: Number
 })
 
 export default model<IReserveSchema>('Reserve', ReserveSchema)

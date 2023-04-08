@@ -8,5 +8,4 @@ export interface IUserRepository {
   getById(id: string): Promise<object>
   updateById({ _id, ...props }: IUserEntityProps): Promise<object>
   findByFilter(props: { page?: number; limit?: number } & IUserEntityProps): Promise<object>
-  comparePass(actualPass: string, newPass: string): Promise<boolean>
 }
