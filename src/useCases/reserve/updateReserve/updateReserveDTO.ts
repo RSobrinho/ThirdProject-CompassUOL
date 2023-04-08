@@ -1,7 +1,7 @@
 export interface UpdateReserveDTO {
   _id?: string,
-  idUser?: string,
-  startDate?: string | Date,
-  endDate?: string | Date,
-  idCar?: string,
+  _id_user?: string,
+  start_date?: string | Date,
+  end_date?: string | Date,
+  _id_car?: string,
 }

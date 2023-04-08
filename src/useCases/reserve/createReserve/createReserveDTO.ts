@@ -1,6 +1,6 @@
 export interface createReserveDTO {
-  startDate: string,
-  endDate: string,
-  idCar: string
-  idUser: string
+  start_date: string,
+  end_date: string,
+  _id_car: string
+  _id_user: string
 }

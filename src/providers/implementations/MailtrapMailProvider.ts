@@ -1,4 +1,4 @@
-import { IMailProvider, IMessage } from '../interfaces/IMailProvider'
+import { IMailProvider, IMessage } from '../interfaces/iMailProvider'
 import nodemailer from 'nodemailer'
 import Mail from 'nodemailer/lib/mailer'
 export class MailtrapMailProvider implements IMailProvider {

@@ -10,9 +10,9 @@ export class CarEntity {
   model: string
   color: string
   year: number
-  valuePerDay: number
+  value_per_day: number
   accessories: IAccessoryEntityProps[]
-  numberOfPassengers: number
+  number_of_passengers: number
 
   constructor (props: ICarEntityProps) {
     Object.assign(this, props)
@@ -25,15 +25,13 @@ export class CarEntity {
       this.accessories = this.accessoriesWithId()
     }
 
-    const errors = validator.validate(CarSchemaValidator, { ...this })
+    const data = validator.validate(CarSchemaValidator, { ...this })
 
-    if (errors) {
-      throw new ValidationError('Zod validation errors', errors)
+    if (data.success === false) {
+      throw new ValidationError('Zod validation errors', data)
+    } else {
+      Object.assign(this, data)
     }
-  }
-
-  get id () {
-    return this._id
   }
 
   private accessoriesWithId (): IAccessoryEntityProps[] {

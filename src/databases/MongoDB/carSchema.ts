@@ -1,18 +1,18 @@
-import { Schema, model, Document, Types } from 'mongoose'
+import { Schema, model, Document } from 'mongoose'
 
 interface ICarSchema extends Document {
   _id: Schema.Types.Mixed,
   model: string,
   color: string,
   year: number,
-  valuePerDay: number,
+  value_per_day: number,
   accessories: [
     {
       _id: string
       description: string
     }
   ],
-  numberOfPassengers: number
+  number_of_passengers: number
 }
 
 const CarSchema = new Schema({
@@ -20,14 +20,14 @@ const CarSchema = new Schema({
   model: String,
   color: String,
   year: Number,
-  valuePerDay: Number,
+  value_per_day: Number,
   accessories: [
     {
       _id: String,
       description: String
     }
   ],
-  numberOfPassengers: Number
+  number_of_passengers: Number
 })
 
 export default model<ICarSchema>('Car', CarSchema)

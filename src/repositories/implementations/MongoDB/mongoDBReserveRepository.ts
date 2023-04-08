@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { IReserveRepository } from '../../interfaces/iReserveRepository'
 import ReserveSchema from '../../../databases/MongoDB/reserveSchema'
 import { ReserveEntity } from '../../../entities/implementations/reserve'
@@ -5,11 +6,7 @@ import { IReserveEntityProps } from 'entities/interfaces/iReserveEntityProps'
 
 export class MongoDBReserveRepository implements IReserveRepository {
   async findByData (props: IReserveEntityProps): Promise<IReserveEntityProps> {
-    return await ReserveSchema.findOne(props)
-  }
-
-  async getById (id: string): Promise<object> {
-    return await ReserveSchema.findById(id).select('-__v')
+    return await ReserveSchema.findOne(props).select('-__v').lean()
   }
 
   async updateById ({ _id, ...props }: IReserveEntityProps): Promise<object> {
@@ -17,14 +14,14 @@ export class MongoDBReserveRepository implements IReserveRepository {
     return await ReserveSchema.findById(_id)
   }
 
-  async findByRange (startDate: Date, endDate: Date): Promise<IReserveEntityProps[]> {
+  async findByRange (start_date: Date, end_date: Date): Promise<IReserveEntityProps[]> {
     const reservations = await ReserveSchema.find({
       $or: [
-        { startDate: { $lte: endDate }, endDate: { $gte: startDate } },
-        { startDate: { $gte: startDate, $lte: endDate }, endDate: { $gte: endDate } },
-        { startDate: { $lte: startDate }, endDate: { $gte: startDate, $lte: endDate } },
-        { startDate: { $gte: startDate }, endDate: { $lte: endDate } },
-        { startDate: { $lte: startDate }, endDate: { $gte: endDate } }
+        { start_date: { $lte: end_date }, end_date: { $gte: start_date } },
+        { start_date: { $gte: start_date, $lte: end_date }, end_date: { $gte: end_date } },
+        { start_date: { $lte: start_date }, end_date: { $gte: start_date, $lte: end_date } },
+        { start_date: { $gte: start_date }, end_date: { $lte: end_date } },
+        { start_date: { $lte: start_date }, end_date: { $gte: end_date } }
       ]
     }).exec() as unknown as IReserveEntityProps[]
 
@@ -46,7 +43,7 @@ export class MongoDBReserveRepository implements IReserveRepository {
     const offset = (page - 1) * limit
 
     const reserves = await ReserveSchema.find(props)
-      .select('_id idUser startDate endDate idCar finalValue')
+      .select('_id _id_user start_date end_date _id_car final_value')
       .skip(offset)
       .limit(limit)
 

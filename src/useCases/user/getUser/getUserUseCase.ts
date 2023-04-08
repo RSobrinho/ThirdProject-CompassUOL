@@ -6,7 +6,7 @@ export class GetUserUseCase {
 
   async execute (id: string): Promise<object> {
     const _ = new UserEntity({ _id: id })
-    const user = await this.userRepository.getById(id)
+    const user = await this.userRepository.findByData({ _id: id })
 
     if (!user) {
       throw new NotFoundError('user with this id')

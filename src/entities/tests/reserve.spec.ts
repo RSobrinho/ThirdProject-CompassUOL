@@ -15,11 +15,11 @@ const formattedEndDate = format(endDateBetween, 'dd/MM/yyyy')
 describe('ReserveEntity', () => {
   const validProps: IReserveEntityProps = {
     id: v4(),
-    idUser: v4(),
-    startDate: formattedStartDate,
-    endDate: formattedEndDate,
-    idCar: v4(),
-    finalValue: faker.datatype.number({ min: 20, max: 1000000 })
+    _id_user: v4(),
+    start_date: formattedStartDate,
+    end_date: formattedEndDate,
+    _id_car: v4(),
+    final_value: faker.datatype.number({ min: 20, max: 1000000 })
   }
 
   it('should create a valid reserve', () => {

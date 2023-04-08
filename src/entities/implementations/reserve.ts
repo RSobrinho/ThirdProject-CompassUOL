@@ -6,11 +6,11 @@ import { v4 } from 'uuid'
 
 export class ReserveEntity {
   _id: string
-  idUser: string
-  startDate: string | Date
-  endDate: string | Date
-  idCar: string
-  finalValue: number
+  _id_user: string
+  start_date: string | Date
+  end_date: string | Date
+  _id_car: string
+  final_value: number
 
   constructor (props: IReserveEntityProps) {
     Object.assign(this, props)

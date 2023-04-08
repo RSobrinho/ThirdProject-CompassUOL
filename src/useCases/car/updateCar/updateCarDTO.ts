@@ -3,9 +3,9 @@ export interface UpdateCarDTO {
   model?: string,
  color?: string,
  year?: number,
- valuePerDay?: number,
+ value_per_day?: number,
  accessories?: {
   description: string
 }[],
- numberOfPassengers?: number
+ number_of_passengers?: number
 }

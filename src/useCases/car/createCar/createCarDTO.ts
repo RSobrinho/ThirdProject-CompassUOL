@@ -1,11 +1,11 @@
 export interface createCarDTO {
- _id?: string,
+  _id?: string,
   model: string,
- color: string,
- year: number,
- valuePerDay: number,
- accessories: {
-  description: string
-}[],
- numberOfPassengers: number
+  color: string,
+  year: number,
+  value_per_day: number,
+  accessories: {
+    description: string
+  }[],
+  number_of_passengers: number
 }

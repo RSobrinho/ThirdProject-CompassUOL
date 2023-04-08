@@ -11,7 +11,7 @@
 //     model: faker.vehicle.vehicle(),
 //     color: faker.color.human(),
 //     year: faker.datatype.number({ min: 1950, max: (new Date()).getFullYear() }),
-//     valuePerDay: faker.datatype.number({ min: 20, max: 10000 }),
+//     value_per_day: faker.datatype.number({ min: 20, max: 10000 }),
 //     accessories: [
 //       {
 //         description: faker.lorem.words(2)
@@ -23,7 +23,7 @@
 //         description: faker.lorem.words(2)
 //       }
 //     ],
-//     numberOfPassengers: faker.datatype.number({ min: 2, max: 10 })
+//     number_of_passengers: faker.datatype.number({ min: 2, max: 10 })
 //   }
 
 //   let carRepository: InMemoryCarRepository
@@ -45,14 +45,14 @@
 //       json: vi.fn().mockReturnThis()
 //     }
 
-//     const updatedProps = { ...validProps, color: 'black', year: 1955, valuePerDay: 1000 }
+//     const updatedProps = { ...validProps, color: 'black', year: 1955, value_per_day: 1000 }
 
 //     const car: any = await updateCarUseCase.execute(updatedProps)
 //     await updateCarController.handle(req, res)
 
 //     expect(car.color).toEqual(updatedProps.color)
 //     expect(car.year).toEqual(updatedProps.year)
-//     expect(car.valuePerDay).toEqual(updatedProps.valuePerDay)
+//     expect(car.value_per_day).toEqual(updatedProps.value_per_day)
 
 //     expect(async () => {
 //       return await updateCarUseCase.execute(validProps)

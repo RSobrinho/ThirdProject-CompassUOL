@@ -1,24 +1,19 @@
 import { ICarRepository } from '../../interfaces/iCarRepository'
 import CarSchema from '../../../databases/MongoDB/carSchema'
-import { CarEntity } from '../../../entities/implementations/car'
-import { ICarEntityProps } from 'entities/interfaces/iCarEntityProps'
+import { ICarEntityProps } from '../../../entities/interfaces/iCarEntityProps'
 
 export class MongoDBCarRepository implements ICarRepository {
-  async save (car: CarEntity): Promise<void> {
+  async save (car: ICarEntityProps): Promise<void> {
     await CarSchema.create(car)
   }
 
   async findByData (props: ICarEntityProps): Promise<ICarEntityProps> {
-    return await CarSchema.findOne(props)
+    return await CarSchema.findOne(props).select('-__v').lean()
   }
 
-  async getById (id: string): Promise<object> {
-    return await CarSchema.findById(id).select('-__v')
-  }
-
-  async updateById ({ _id, ...props }): Promise<object> {
+  async updateById ({ _id, ...props }): Promise<ICarEntityProps> {
     await CarSchema.updateOne({ _id }, props)
-    return await CarSchema.findByIdAndUpdate(_id, props)
+    return await CarSchema.findById(_id)
   }
 
   async deleteById (id: string): Promise<boolean> {
@@ -47,7 +42,7 @@ export class MongoDBCarRepository implements ICarRepository {
     const offset = (page - 1) * limit
 
     const cars = await CarSchema.find(props)
-      .select('_id model color year valuePerDay accessories numberOfPassengers')
+      .select('_id model color year value_per_day accessories number_of_passengers')
       .skip(offset)
       .limit(limit)
 

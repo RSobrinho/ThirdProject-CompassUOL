@@ -27,7 +27,7 @@ export const UserSchemaValidator = z.object({
 
     return true
   }),
-  email: z.string().email(),
+  email: z.string().email().max(60),
   password: z.string().min(6).max(40),
   cep: z.string().min(8).max(10),
   qualified: z.enum(['yes', 'no']),

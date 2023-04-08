@@ -11,7 +11,7 @@
 //     model: faker.vehicle.vehicle(),
 //     color: faker.color.human(),
 //     year: faker.datatype.number({ min: 1950, max: (new Date()).getFullYear() }),
-//     valuePerDay: faker.datatype.number({ min: 20, max: 10000 }),
+//     value_per_day: faker.datatype.number({ min: 20, max: 10000 }),
 //     accessories: [
 //       {
 //         description: faker.lorem.words(2)
@@ -23,7 +23,7 @@
 //         description: faker.lorem.words(2)
 //       }
 //     ],
-//     numberOfPassengers: faker.datatype.number({ min: 2, max: 10 })
+//     number_of_passengers: faker.datatype.number({ min: 2, max: 10 })
 //   }
 
 //   let reserveRepository: InMemoryReserveRepository
@@ -45,14 +45,14 @@
 //       json: vi.fn().mockReturnThis()
 //     }
 
-//     const updatedProps = { ...validProps, color: 'black', year: 1955, valuePerDay: 1000 }
+//     const updatedProps = { ...validProps, color: 'black', year: 1955, value_per_day: 1000 }
 
 //     const reserve: any = await updateReserveUseCase.execute(updatedProps)
 //     await updateReserveController.handle(req, res)
 
 //     expect(reserve.color).toEqual(updatedProps.color)
 //     expect(reserve.year).toEqual(updatedProps.year)
-//     expect(reserve.valuePerDay).toEqual(updatedProps.valuePerDay)
+//     expect(reserve.value_per_day).toEqual(updatedProps.value_per_day)
 
 //     expect(async () => {
 //       return await updateReserveUseCase.execute(validProps)

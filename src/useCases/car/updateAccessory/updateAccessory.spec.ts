@@ -32,14 +32,14 @@
 //       json: vi.fn().mockReturnThis()
 //     }
 
-//     const updatedProps = { ...validProps, color: 'black', year: 1955, valuePerDay: 1000 }
+//     const updatedProps = { ...validProps, color: 'black', year: 1955, value_per_day: 1000 }
 
 //     const car: any = await updateAccessoryUseCase.execute(updatedProps)
 //     await updateAccessoryController.handle(req, res)
 
 //     expect(car.color).toEqual(updatedProps.color)
 //     expect(car.year).toEqual(updatedProps.year)
-//     expect(car.valuePerDay).toEqual(updatedProps.valuePerDay)
+//     expect(car.value_per_day).toEqual(updatedProps.value_per_day)
 
 //     expect(async () => {
 //       return await updateAccessoryUseCase.execute(validProps)

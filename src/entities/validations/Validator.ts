@@ -17,7 +17,7 @@ class Validator {
         return { code, path, message }
       })
 
-      errors.success = true
+      errors.success = false
 
       return errors
     } else {

@@ -9,11 +9,7 @@ export class MongoDBUserRepository implements IUserRepository {
   }
 
   async findByData (props: IUserEntityProps): Promise<IUserEntityProps> {
-    return await UserSchema.findOne(props)
-  }
-
-  async getById (id: string): Promise<object> {
-    return await UserSchema.findById(id).select('-__v')
+    return await UserSchema.findOne(props).select('-__v').lean()
   }
 
   async deleteById (id: string): Promise<boolean> {

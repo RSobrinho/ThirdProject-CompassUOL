@@ -1,39 +1,40 @@
-import { isAfter, isValid } from 'date-fns'
+/* eslint-disable camelcase */
+import { isValid } from 'date-fns'
 import { z } from 'zod'
 import { ValidationError } from '../../errors/validationError'
 
 export const ReserveSchemaValidator = z.object({
   _id: z.string().uuid(),
-  idUser: z.string().uuid(),
-  startDate: z.string().transform((stringDate) => {
+  _id_user: z.string().uuid(),
+  start_date: z.string().transform((stringDate) => {
     const arrayDate = stringDate.split('/')
     const date = new Date(parseInt(arrayDate[2]), parseInt(arrayDate[1]) - 1, parseInt(arrayDate[0]))
     return date
-  }).refine((startDate) => {
+  }).refine((start_date) => {
     const minDate = new Date()
     minDate.setHours(0, 0, 0, 0)
 
-    if (!isValid(startDate)) {
-      throw new ValidationError('startDate validation error')
+    if (!isValid(start_date)) {
+      throw new ValidationError('ValidationError -> start_date not valid')
     }
 
-    if (startDate < minDate) {
-      throw new ValidationError('startDate validation error')
+    if (start_date < minDate) {
+      throw new ValidationError('ValidationError -> start_date cannot start in the past')
     }
 
     return true
   }),
-  endDate: z.string().transform((stringDate) => {
+  end_date: z.string().transform((stringDate) => {
     const arrayDate = stringDate.split('/')
     const date = new Date(parseInt(arrayDate[2]), parseInt(arrayDate[1]) - 1, parseInt(arrayDate[0]))
     return date
-  }).refine((endDate) => {
-    if (!isValid(endDate)) {
-      throw new ValidationError('endDate validation error')
+  }).refine((end_date) => {
+    if (!isValid(end_date)) {
+      throw new ValidationError('ValidationError -> end_date not valid')
     }
 
     return true
   }),
-  idCar: z.string().uuid(),
-  finalValue: z.number().gt(20).lt(1000000)
+  _id_car: z.string().uuid(),
+  final_value: z.number().gt(20).lt(1000000)
 })

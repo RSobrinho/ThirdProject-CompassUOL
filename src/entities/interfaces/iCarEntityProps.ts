@@ -5,7 +5,7 @@ export interface ICarEntityProps{
   model?: string,
   color?: string,
   year?: number,
-  valuePerDay?: number,
+  value_per_day?: number,
   accessories?: IAccessoryEntityProps[],
-  numberOfPassengers?: number
+  number_of_passengers?: number
 }

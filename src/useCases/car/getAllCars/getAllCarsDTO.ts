@@ -7,7 +7,7 @@ export interface GetAllCarsDTO {
   model?: string,
   color?: string,
   year?: string,
-  valuePerDay?: string,
+  value_per_day?: string,
   accessories?: IAccessoryEntityProps[],
-  numberOfPassengers?: string
+  number_of_passengers?: string
 }

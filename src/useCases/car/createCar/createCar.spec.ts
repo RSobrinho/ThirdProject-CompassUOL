@@ -12,7 +12,7 @@ describe('CreateCarFeature', () => {
     model: faker.vehicle.vehicle(),
     color: faker.color.human(),
     year: faker.datatype.number({ min: 1950, max: (new Date()).getFullYear() }),
-    valuePerDay: faker.datatype.number({ min: 20, max: 10000 }),
+    value_per_day: faker.datatype.number({ min: 20, max: 10000 }),
     accessories: [
       {
         description: faker.lorem.words(2)
@@ -24,7 +24,7 @@ describe('CreateCarFeature', () => {
         description: faker.lorem.words(2)
       }
     ],
-    numberOfPassengers: faker.datatype.number({ min: 2, max: 10 })
+    number_of_passengers: faker.datatype.number({ min: 2, max: 10 })
   }
 
   let carRepository: InMemoryCarRepository
