@@ -3,9 +3,8 @@ import { v4 } from 'uuid'
 import { UserEntity } from '../implementations/user'
 import { format } from 'date-fns'
 import { describe, it, expect } from 'vitest'
-import { IUserEntityProps } from '../validations/userSchemaValidator'
 import { extraFeatures } from '../../utils/ExtraFeatures'
-import { ValidationError } from '../../errors/validationError'
+import { IUserEntityProps } from '../interfaces/iUserEntityProps'
 
 const randomDate = faker.date.between(((new Date() as unknown as number) - (1000 * 60 * 60 * 24 * 365 * 100)), ((new Date() as unknown as number) - (1000 * 60 * 60 * 24 * 365 * 3)))
 
@@ -13,7 +12,6 @@ const formattedRandomDate = format(randomDate, 'yyyy-MM-dd')
 
 describe('UserEntity', () => {
   const validProps: IUserEntityProps = {
-    _id: v4(),
     name: faker.name.fullName(),
     cpf: extraFeatures.generateCPF(),
     birth: formattedRandomDate,
@@ -32,6 +30,16 @@ describe('UserEntity', () => {
     const validUser = new UserEntity(validProps)
 
     expect(validUser).toBeInstanceOf(UserEntity)
-    // expect(validUser).toHaveProperty('props', validProps)
+  })
+
+  it('should throw an error if at least 1 property is invalid', () => {
+    const invalidUser = () => {
+      return new UserEntity({
+        ...validProps,
+        cpf: '000.000.000-11'
+      })
+    }
+
+    expect(invalidUser).toThrowError()
   })
 })
