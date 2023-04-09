@@ -3,10 +3,8 @@ import { CarEntity } from '../../../entities/implementations/car'
 import { ICarRepository } from '../../../repositories/interfaces/iCarRepository'
 import { UpdateCarDTO } from './updateCarDTO'
 import { ValidationError } from '../../../errors/validationError'
-import { IReserveRepository } from '../../../repositories/interfaces/iReserveRepository'
-import { IUserEntityProps } from 'entities/interfaces/iUserEntityProps'
 export class UpdateCarUseCase {
-  constructor (private carRepository: ICarRepository, private reserveRepository: IReserveRepository) {}
+  constructor (private carRepository: ICarRepository) {}
 
   async execute (props: UpdateCarDTO): Promise<object> {
     const carToUpdate = new CarEntity(props)

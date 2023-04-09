@@ -52,7 +52,7 @@ export class UpdateReserveUseCase {
     car = await this.carRepository.findByData({ _id: reserveToUpdate._id_car })
     user = await this.carRepository.findByData({ _id: reserveToUpdate._id_user })
 
-    const reserveWithUpdatedProps = { ...reserveToUpdate._doc, ...validatedDefinedProps }
+    const reserveWithUpdatedProps = { ...reserveToUpdate, ...validatedDefinedProps }
 
     // start_date and end_date validations
     if (reserveWithUpdatedProps.start_date >= reserveWithUpdatedProps.end_date) {

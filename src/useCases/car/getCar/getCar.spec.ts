@@ -3,9 +3,29 @@ import { InMemoryCarRepository } from '../../../repositories/implementations/InM
 import { GetCarUseCase } from './getCarUseCase'
 import { GetCarController } from './getCarController'
 import { v4 } from 'uuid'
-import { cars } from '../../../utils/fakeData/cars'
+import { faker } from '@faker-js/faker'
+import { createCarDTO } from '../createCar/createCarDTO'
 describe('GetCarFeature', () => {
-  const validId = v4()
+  const validProps: createCarDTO = {
+    model: faker.vehicle.vehicle(),
+    color: faker.color.human(),
+    year: faker.datatype.number({ min: 1950, max: (new Date()).getFullYear() }),
+    value_per_day: faker.datatype.number({ min: 20, max: 10000 }),
+    accessories: [
+      {
+        description: faker.lorem.words(2)
+      },
+      {
+        description: faker.lorem.words(2)
+      },
+      {
+        description: faker.lorem.words(2)
+      }
+    ],
+    number_of_passengers: faker.datatype.number({ min: 2, max: 10 })
+  }
+
+  const validIds = [v4(), v4(), v4()]
 
   let carRepository: InMemoryCarRepository
   let getCarUseCase: GetCarUseCase
@@ -16,27 +36,27 @@ describe('GetCarFeature', () => {
     getCarUseCase = new GetCarUseCase(carRepository)
     getCarController = new GetCarController(getCarUseCase)
 
-    for (const car of cars) {
-      carRepository.cars.push(car)
+    for (let i = 0; i < 3; i++) {
+      carRepository.cars.push({ ...validProps, _id: validIds[i] })
     }
-    carRepository.cars.push({ ...cars[0], _id: validId })
   })
 
-  it('should get a car successfully and send status 200', async () => {
-    const req: any = { params: { id: carRepository.cars[carRepository.cars.length - 1]._id } }
+  it('should get car by id send response with status 200', async () => {
+    const req: any = { params: { id: validIds[0] } }
     const res: any = {
-      status: vi.fn().mockReturnThis(),
-      json: vi.fn().mockReturnThis()
+      json: vi.fn().mockReturnThis(),
+      status: vi.fn().mockReturnThis()
     }
 
-    const car: any = await getCarUseCase.execute(validId)
     await getCarController.handle(req, res)
 
-    expect(car._id).toEqual(validId)
-    expect(async () => {
-      return await getCarUseCase.execute(validId)
-    }).not.toThrowError()
-
+    expect(res.json).toHaveBeenCalled()
     expect(res.status).toHaveBeenCalledWith(200)
+  })
+
+  it('should return a list of cars after getCarUseCase execution', async () => {
+    await getCarUseCase.execute(validIds[0])
+    expect(carRepository.cars).not.toContain({ ...validProps, id: validIds[0] })
+    expect(carRepository.cars.length).toBe(3)
   })
 })

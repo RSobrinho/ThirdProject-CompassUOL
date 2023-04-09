@@ -6,7 +6,6 @@ import { format } from 'date-fns'
 import { IReserveEntityProps } from '../interfaces/iReserveEntityProps'
 
 const formattedStartDate = format(new Date(), 'dd/MM/yyyy')
-
 const millisecondsToday = new Date().getTime()
 const milliseconds3Years = millisecondsToday + (1000 * 60 * 60 * 24 * 365)
 const endDateBetween = faker.date.between(millisecondsToday, milliseconds3Years)

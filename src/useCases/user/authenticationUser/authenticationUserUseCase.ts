@@ -1,8 +1,8 @@
 import { IUserRepository } from '../../../repositories/interfaces/iUserRepository'
-import { IAuthenticationDTO } from './authenticationDTO'
+import { AuthenticationUserDTO } from './authenticationUserDTO'
 import { AuthError } from '../../../errors/authError'
 import { verify } from 'jsonwebtoken'
-import { IUserEntityProps } from 'entities/interfaces/iUserEntityProps'
+import { IUserEntityProps } from '../../../entities/interfaces/iUserEntityProps'
 
 interface jwtDecoded {
   _id: string,
@@ -10,11 +10,11 @@ interface jwtDecoded {
   exp: number
 }
 
-export class AuthenticationUseCase {
+export class AuthenticationUserUseCase {
   constructor (private usersRepository: IUserRepository) {
   }
 
-  public async execute ({ headerAuth }: IAuthenticationDTO): Promise<IUserEntityProps> {
+  public async execute ({ headerAuth }: AuthenticationUserDTO): Promise<IUserEntityProps> {
     let token: string
     if (
       headerAuth &&

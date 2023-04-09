@@ -1,63 +1,55 @@
-// import { faker } from '@faker-js/faker'
-// import { describe, it, expect, vi, beforeAll } from 'vitest'
-// import { UserEntity } from '../../../entities/implementations/user'
-// import { InMemoryUserRepository } from '../../../repositories/implementations/InMemory/inMemoryUserRepository'
-// import { GetAllUsersUseCase } from './getAllUsersUseCase'
-// import { ValidationError } from '../../../errors/validationError'
-// import { GetAllUsersController } from './getAllUsersController'
-// import { GetAllUsersDTO } from './getAllUsersDTO'
-// import { users } from '../../../utils/fakeData/users'
+import { describe, it, expect, vi, beforeAll } from 'vitest'
+import { InMemoryReserveRepository } from '../../../repositories/implementations/InMemory/inMemoryReserveRepository'
+import { GetAllReservesUseCase } from './getAllReservesUseCase'
+import { GetAllReservesController } from './getAllReservesController'
+import { v4 } from 'uuid'
+import { InMemoryCarRepository } from '../../../repositories/implementations/InMemory/inMemoryCarRepository'
+import { InMemoryUserRepository } from '../../../repositories/implementations/InMemory/inMemoryUserRepository'
+import { FakeEntities } from '../../../utils/FakeEntities'
+describe('GetAllReservesFeature', () => {
+  const validIds = [
+    { _id: v4(), _id_car: v4(), _id_user: v4() },
+    { _id: v4(), _id_car: v4(), _id_user: v4() },
+    { _id: v4(), _id_car: v4(), _id_user: v4() }
+  ]
 
-// describe('GetAllUsersFeature', () => {
-//   const validProps: GetAllUsersDTO = {
-//     page: `${faker.datatype.number({ min: 0, max: 5 })}`,
-//     limit: `${faker.datatype.number({ min: 0, max: 20 })}`,
-//     model: faker.vehicle.vehicle(),
-//     color: faker.color.human(),
-//     year: `${faker.datatype.number({ min: 1950, max: (new Date()).getFullYear() })}`,
-//     value_per_day: `${faker.datatype.number({ min: 20, max: 10000 })}`,
-//     accessories: [
-//       {
-//         description: faker.lorem.words(2)
-//       },
-//       {
-//         description: faker.lorem.words(2)
-//       },
-//       {
-//         description: faker.lorem.words(2)
-//       }
-//     ],
-//     number_of_passengers: `${faker.datatype.number({ min: 2, max: 10 })}`
-//   }
+  let getAllReservesController: GetAllReservesController
+  let getAllReservesUseCase: GetAllReservesUseCase
+  let reserveRepository: InMemoryReserveRepository
+  let carRepository: InMemoryCarRepository
+  let userRepository: InMemoryUserRepository
+  let fakeEntities: FakeEntities
 
-//   let userRepository: InMemoryUserRepository
-//   let getAllUsersUseCase: GetAllUsersUseCase
-//   let getAllUsersController: GetAllUsersController
+  beforeAll(() => {
+    fakeEntities = new FakeEntities()
+    userRepository = new InMemoryUserRepository()
+    carRepository = new InMemoryCarRepository()
+    reserveRepository = new InMemoryReserveRepository()
+    getAllReservesUseCase = new GetAllReservesUseCase(reserveRepository)
+    getAllReservesController = new GetAllReservesController(getAllReservesUseCase)
 
-//   beforeAll(() => {
-//     userRepository = new InMemoryUserRepository()
-//     getAllUsersUseCase = new GetAllUsersUseCase(userRepository)
-//     getAllUsersController = new GetAllUsersController(getAllUsersUseCase)
-//   })
+    for (let i = 0; i < 3; i++) {
+      userRepository.users.push(fakeEntities.user(validIds[i]._id_user))
+      carRepository.cars.push(fakeEntities.car(validIds[i]._id_car))
+      reserveRepository.reserves.push(fakeEntities.reserve(validIds[i]._id))
+    }
+  })
 
-//   it('should get users successfully based on filter and response status 200', async () => {
-//     const req: any = { query: {} }
-//     const res: any = {
-//       json: vi.fn().mockReturnThis(),
-//       status: vi.fn().mockReturnThis()
-//     }
+  it('should get all reserves without any query filter, based on any query filter a reserve successfully and send response with status 200', async () => {
+    const req: any = {}
+    const res: any = {
+      json: vi.fn().mockReturnThis(),
+      status: vi.fn().mockReturnThis()
+    }
 
-//     users.forEach(async (user) => await userRepository.save(user))
+    await getAllReservesController.handle(req, res)
 
-//     const dataReturn: any = await getAllUsersUseCase.execute({ page: validProps.page, limit: validProps.limit, model: 'Porsche Spyder' })
+    expect(res.json).toHaveBeenCalled()
+    expect(res.status).toHaveBeenCalledWith(200)
+  })
 
-//     await getAllUsersController.handle(req, res)
-
-//     expect(userRepository.users).toHaveLength(16)
-//     expect(dataReturn.total).toBe(8)
-//     expect(dataReturn.offset).toBe((parseInt(validProps.page) - 1) * parseInt(validProps.limit))
-//     expect(dataReturn.offsets).toBe(Math.ceil(dataReturn.total / parseInt(validProps.limit)))
-//     expect(dataReturn.limit).toBe(parseInt(validProps.limit))
-//     expect(res.status).toHaveBeenCalledWith(200)
-//   })
-// })
+  it('should return a list of reserves after getAllReservesUseCase execution', async () => {
+    await getAllReservesUseCase.execute({})
+    expect(reserveRepository.reserves.length).toBe(3)
+  })
+})

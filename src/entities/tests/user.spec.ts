@@ -1,5 +1,4 @@
 import { faker } from '@faker-js/faker'
-import { v4 } from 'uuid'
 import { UserEntity } from '../implementations/user'
 import { format } from 'date-fns'
 import { describe, it, expect } from 'vitest'
@@ -23,7 +22,7 @@ describe('UserEntity', () => {
     complement: faker.address.secondaryAddress(),
     neighborhood: faker.address.street(),
     locality: faker.address.city(),
-    uf: extraFeatures.generateBrasilianState()
+    uf: extraFeatures.generateBrasilianState() || 'MS'
   }
 
   it('should create a valid user', () => {

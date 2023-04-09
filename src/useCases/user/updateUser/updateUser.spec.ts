@@ -1,63 +1,69 @@
-// import { describe, it, expect, vi, beforeAll } from 'vitest'
-// import { InMemoryCarRepository } from '../../../repositories/implementations/InMemory/inMemoryCarRepository'
-// import { UpdateCarUseCase } from './updateCarUseCase'
-// import { UpdateCarController } from './updateCarController'
-// import { v4 } from 'uuid'
-// import { faker } from '@faker-js/faker'
-// import { UpdateCarDTO } from './updateCarDTO'
-// describe('UpdateCarFeature', () => {
-//   const validProps: UpdateCarDTO = {
-//     _id: v4(),
-//     model: faker.vehicle.vehicle(),
-//     color: faker.color.human(),
-//     year: faker.datatype.number({ min: 1950, max: (new Date()).getFullYear() }),
-//     value_per_day: faker.datatype.number({ min: 20, max: 10000 }),
-//     accessories: [
-//       {
-//         description: faker.lorem.words(2)
-//       },
-//       {
-//         description: faker.lorem.words(2)
-//       },
-//       {
-//         description: faker.lorem.words(2)
-//       }
-//     ],
-//     number_of_passengers: faker.datatype.number({ min: 2, max: 10 })
-//   }
+import { describe, it, expect, vi, beforeAll } from 'vitest'
+import { InMemoryUserRepository } from '../../../repositories/implementations/InMemory/inMemoryUserRepository'
+import { UpdateUserUseCase } from './updateUserUseCase'
+import { UpdateUserController } from './updateUserController'
+import { v4 } from 'uuid'
+import { faker } from '@faker-js/faker'
+import { createUserDTO } from '../createUser/createUserDTO'
+import { format } from 'date-fns'
+import { extraFeatures } from '../../../utils/ExtraFeatures'
+import { UpdateUserDTO } from './updateUserDTO'
+describe('UpdateUserFeature', () => {
+  const randomDate = faker.date.between(((new Date() as unknown as number) - (1000 * 60 * 60 * 24 * 365 * 100)), ((new Date() as unknown as number) - (1000 * 60 * 60 * 24 * 365 * 3)))
 
-//   let carRepository: InMemoryCarRepository
-//   let updateCarUseCase: UpdateCarUseCase
-//   let updateCarController: UpdateCarController
+  const formattedRandomDate = format(randomDate, 'yyyy-MM-dd')
 
-//   beforeAll(() => {
-//     carRepository = new InMemoryCarRepository()
-//     updateCarUseCase = new UpdateCarUseCase(carRepository)
-//     updateCarController = new UpdateCarController(updateCarUseCase)
+  const validPropsCreator = (_id = v4()): UpdateUserDTO => {
+    return {
+      _id,
+      name: faker.name.fullName(),
+      cpf: extraFeatures.generateCPF() || '077.998.461-78',
+      birth: formattedRandomDate || '03/07/2004',
+      email: faker.internet.email(),
+      password: faker.internet.password(6),
+      cep: faker.random.numeric(8),
+      qualified: faker.helpers.arrayElement(['yes', 'no']),
+      patio: faker.address.street(),
+      complement: faker.address.secondaryAddress(),
+      neighborhood: faker.address.street(),
+      locality: faker.address.city(),
+      uf: extraFeatures.generateBrasilianState() || 'MS'
+    }
+  }
 
-//     carRepository.cars.push(validProps)
-//   })
+  const validIds: string[] = [v4(), v4(), v4()]
 
-//   it('should update a car successfully and send status 200', async () => {
-//     const req: any = { params: { id: carRepository.cars[carRepository.cars.length - 1]._id }, body: { ...validProps, _id: undefined } }
-//     const res: any = {
-//       status: vi.fn().mockReturnThis(),
-//       json: vi.fn().mockReturnThis()
-//     }
+  const propsToUpdate = { name: 'Rafael Sobrinho', uf: 'MT', birth: '03/08/2001' }
+  let userRepository: InMemoryUserRepository
+  let updateUserUseCase: UpdateUserUseCase
+  let updateUserController: UpdateUserController
 
-//     const updatedProps = { ...validProps, color: 'black', year: 1955, value_per_day: 1000 }
+  beforeAll(() => {
+    userRepository = new InMemoryUserRepository()
+    updateUserUseCase = new UpdateUserUseCase(userRepository)
+    updateUserController = new UpdateUserController(updateUserUseCase)
 
-//     const car: any = await updateCarUseCase.execute(updatedProps)
-//     await updateCarController.handle(req, res)
+    for (let i = 0; i < 3; i++) {
+      userRepository.users.push(validPropsCreator(validIds[i]))
+    }
+  })
 
-//     expect(car.color).toEqual(updatedProps.color)
-//     expect(car.year).toEqual(updatedProps.year)
-//     expect(car.value_per_day).toEqual(updatedProps.value_per_day)
+  it('should get user by id send response with status 200', async () => {
+    const req: any = { params: { id: validIds[0] }, body: propsToUpdate }
+    const res: any = {
+      json: vi.fn().mockReturnThis(),
+      status: vi.fn().mockReturnThis()
+    }
 
-//     expect(async () => {
-//       return await updateCarUseCase.execute(validProps)
-//     }).not.toThrowError()
+    await updateUserController.handle(req, res)
 
-//     expect(res.status).toHaveBeenCalledWith(200)
-//   })
-// })
+    expect(res.json).toHaveBeenCalled()
+    expect(res.status).toHaveBeenCalledWith(200)
+  })
+
+  it('should return a list of users after updateUserUseCase execution', async () => {
+    const car = await updateUserUseCase.execute({ _id: validIds[1], ...propsToUpdate })
+    expect(userRepository.users).toContain(car)
+    expect(userRepository.users.length).toBe(3)
+  })
+})

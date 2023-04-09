@@ -6,12 +6,12 @@ import { getUserController } from '../useCases/user/getUser'
 import { updateUserController } from '../useCases/user/updateUser'
 import { getAllUsersController } from '../useCases/user/getAllUsers'
 import { logInUserController } from '../useCases/user/logInUser'
-import { authenticationController } from '../useCases/user/authenticationUser'
+import { authenticationUserController } from '../useCases/user/authenticationUser'
 
 const router = Router()
 
 const simpleAuth = asyncHandler((request: Request, response: Response, next: NextFunction) => {
-  return authenticationController.handle(request, response, next)
+  return authenticationUserController.handle(request, response, next)
 })
 
 router.route('/')

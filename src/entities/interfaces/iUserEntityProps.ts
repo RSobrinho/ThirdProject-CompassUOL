@@ -2,7 +2,7 @@ export interface IUserEntityProps {
   _id?: string,
   name?: string,
   cpf?: string,
-  birth?: string,
+  birth?: string | Date,
   email?: string,
   password?: string,
   cep?: string,

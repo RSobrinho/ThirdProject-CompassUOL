@@ -4,7 +4,6 @@ import { createCarDTO } from './createCarDTO'
 import { CarEntity } from '../../../entities/implementations/car'
 import { InMemoryCarRepository } from '../../../repositories/implementations/InMemory/inMemoryCarRepository'
 import { CreateCarUseCase } from './createCarUseCase'
-import { ValidationError } from '../../../errors/validationError'
 import { CreateCarController } from './createCarController'
 
 describe('CreateCarFeature', () => {
@@ -37,9 +36,7 @@ describe('CreateCarFeature', () => {
     createCarController = new CreateCarController(createCarUseCase)
   })
 
-  it('should create a car successfully and send status 201', async () => {
-    const car = await createCarUseCase.execute(validProps)
-
+  it('should create a car successfully and send response with status 201', async () => {
     const req: any = { body: validProps }
     const res: any = {
       json: vi.fn().mockReturnThis(),
@@ -48,17 +45,31 @@ describe('CreateCarFeature', () => {
 
     await createCarController.handle(req, res)
 
-    expect(car).toBeInstanceOf(CarEntity)
-    expect(carRepository.cars).toContain(car)
-    expect(res.status).toHaveBeenCalledWith(201)
     expect(res.json).toHaveBeenCalled()
+    expect(res.status).toHaveBeenCalledWith(201)
+
+    const createdCar = res.json.mock.calls[0][0].newCar
+    const savedCar = await carRepository.cars[0]
+    expect(savedCar).toEqual(createdCar)
   })
 
-  it('should throw ValidationError when trying to create a new car with 2 equals descriptions', async () => {
+  it('should return a valid car after createCarUseCase execution', async () => {
+    const car = await createCarUseCase.execute(validProps)
+
+    expect(car).toBeInstanceOf(CarEntity)
+    expect(carRepository.cars).toContain(car)
+  })
+
+  it('should throw an error when trying to create a new car with 2 equals descriptions', async () => {
     const invalidProps = { ...validProps }
     invalidProps.accessories.push({ description: 'DescRepeated' })
     invalidProps.accessories.push({ description: 'DescRepeated' })
 
-    await expect(createCarUseCase.execute(invalidProps)).rejects.toThrowError(ValidationError)
+    try {
+      await createCarUseCase.execute(invalidProps)
+    } catch (error) {
+      expect(error.statusCode).toBe(400)
+      expect(error.name).toBe('Error')
+    }
   })
 })

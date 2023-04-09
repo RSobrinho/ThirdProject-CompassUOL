@@ -3,9 +3,29 @@ import { InMemoryCarRepository } from '../../../repositories/implementations/InM
 import { DeleteCarUseCase } from './deleteCarUseCase'
 import { DeleteCarController } from './deleteCarController'
 import { v4 } from 'uuid'
-import { cars } from '../../../utils/fakeData/cars'
+import { faker } from '@faker-js/faker'
+import { createCarDTO } from '../createCar/createCarDTO'
 describe('DeleteCarFeature', () => {
-  const validId = v4()
+  const validProps: createCarDTO = {
+    model: faker.vehicle.vehicle(),
+    color: faker.color.human(),
+    year: faker.datatype.number({ min: 1950, max: (new Date()).getFullYear() }),
+    value_per_day: faker.datatype.number({ min: 20, max: 10000 }),
+    accessories: [
+      {
+        description: faker.lorem.words(2)
+      },
+      {
+        description: faker.lorem.words(2)
+      },
+      {
+        description: faker.lorem.words(2)
+      }
+    ],
+    number_of_passengers: faker.datatype.number({ min: 2, max: 10 })
+  }
+
+  const validIds = [v4(), v4(), v4()]
 
   let carRepository: InMemoryCarRepository
   let deleteCarUseCase: DeleteCarUseCase
@@ -16,26 +36,27 @@ describe('DeleteCarFeature', () => {
     deleteCarUseCase = new DeleteCarUseCase(carRepository)
     deleteCarController = new DeleteCarController(deleteCarUseCase)
 
-    for (const car of cars) {
-      carRepository.cars.push(car)
+    for (let i = 0; i < 3; i++) {
+      carRepository.cars.push({ ...validProps, _id: validIds[i] })
     }
-    carRepository.cars.push({ ...cars[0], _id: validId })
   })
 
-  it('should delete a car successfully and send status 204', async () => {
-    const req: any = { params: { id: carRepository.cars[carRepository.cars.length - 1]._id } }
+  it('should delete a car successfully and send response with status 204', async () => {
+    const req: any = { params: { id: validIds[0] } }
     const res: any = {
-      status: vi.fn().mockReturnThis(),
-      json: vi.fn().mockReturnThis()
+      json: vi.fn().mockReturnThis(),
+      status: vi.fn().mockReturnThis()
     }
 
-    await deleteCarUseCase.execute(validId)
     await deleteCarController.handle(req, res)
 
-    expect(async () => {
-      return await deleteCarUseCase.execute(validId)
-    }).not.toThrowError()
-
+    expect(res.json).toHaveBeenCalled()
     expect(res.status).toHaveBeenCalledWith(204)
+  })
+
+  it('should return a valid car after createCarUseCase execution', async () => {
+    await deleteCarUseCase.execute(validIds[1])
+    expect(carRepository.cars).not.toContain({ ...validProps, id: validIds[1] })
+    expect(carRepository.cars.length).toBe(1)
   })
 })

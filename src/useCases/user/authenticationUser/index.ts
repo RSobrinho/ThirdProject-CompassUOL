@@ -1,9 +1,9 @@
 import { MongoDBUserRepository } from '../../../repositories/implementations/MongoDB/mongoDBUserRepository'
-import { AuthenticationUseCase } from './authenticationUseCase'
-import { AuthenticationController } from './authenticationController'
+import { AuthenticationUserUseCase } from './authenticationUserUseCase'
+import { AuthenticationUserController } from './authenticationUserController'
 
 const mongoDBUsersRepository = new MongoDBUserRepository()
-const authenticationUseCase = new AuthenticationUseCase(mongoDBUsersRepository)
-const authenticationController = new AuthenticationController(authenticationUseCase)
+const authenticationUserUseCase = new AuthenticationUserUseCase(mongoDBUsersRepository)
+const authenticationUserController = new AuthenticationUserController(authenticationUserUseCase)
 
-export { authenticationUseCase, authenticationController }
+export { authenticationUserUseCase, authenticationUserController }

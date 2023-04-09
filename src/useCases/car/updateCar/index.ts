@@ -3,9 +3,8 @@ import { UpdateCarUseCase } from './updateCarUseCase'
 import { UpdateCarController } from './updateCarController'
 import { MongoDBReserveRepository } from '../../../repositories/implementations/MongoDB/mongoDBReserveRepository'
 
-const mongoDBReserveRepository = new MongoDBReserveRepository()
 const mongoDBCarRepository = new MongoDBCarRepository()
-const updateCarUseCase = new UpdateCarUseCase(mongoDBCarRepository, mongoDBReserveRepository)
+const updateCarUseCase = new UpdateCarUseCase(mongoDBCarRepository)
 const updateCarController = new UpdateCarController(updateCarUseCase)
 
 export { updateCarUseCase, updateCarController }

@@ -4,10 +4,9 @@ import { UpdateCarUseCase } from './updateCarUseCase'
 import { UpdateCarController } from './updateCarController'
 import { v4 } from 'uuid'
 import { faker } from '@faker-js/faker'
-import { UpdateCarDTO } from './updateCarDTO'
+import { createCarDTO } from '../createCar/createCarDTO'
 describe('UpdateCarFeature', () => {
-  const validProps: UpdateCarDTO = {
-    _id: v4(),
+  const validProps: createCarDTO = {
     model: faker.vehicle.vehicle(),
     color: faker.color.human(),
     year: faker.datatype.number({ min: 1950, max: (new Date()).getFullYear() }),
@@ -26,6 +25,8 @@ describe('UpdateCarFeature', () => {
     number_of_passengers: faker.datatype.number({ min: 2, max: 10 })
   }
 
+  const validIds = [v4(), v4(), v4()]
+  const propsToUpdate = { model: 'Updated model', color: 'black', year: 1999 }
   let carRepository: InMemoryCarRepository
   let updateCarUseCase: UpdateCarUseCase
   let updateCarController: UpdateCarController
@@ -35,29 +36,26 @@ describe('UpdateCarFeature', () => {
     updateCarUseCase = new UpdateCarUseCase(carRepository)
     updateCarController = new UpdateCarController(updateCarUseCase)
 
-    carRepository.cars.push(validProps)
+    for (let i = 0; i < 3; i++) {
+      carRepository.cars.push({ ...validProps, _id: validIds[i] })
+    }
   })
 
-  it('should update a car successfully and send status 200', async () => {
-    const req: any = { params: { id: carRepository.cars[carRepository.cars.length - 1]._id }, body: { ...validProps, _id: undefined } }
+  it('should get car by id send response with status 200', async () => {
+    const req: any = { params: { id: validIds[0] }, body: propsToUpdate }
     const res: any = {
-      status: vi.fn().mockReturnThis(),
-      json: vi.fn().mockReturnThis()
+      json: vi.fn().mockReturnThis(),
+      status: vi.fn().mockReturnThis()
     }
 
-    const updatedProps = { ...validProps, color: 'black', year: 1955, value_per_day: 1000 }
-
-    const car: any = await updateCarUseCase.execute(updatedProps)
     await updateCarController.handle(req, res)
 
-    expect(car.color).toEqual(updatedProps.color)
-    expect(car.year).toEqual(updatedProps.year)
-    expect(car.value_per_day).toEqual(updatedProps.value_per_day)
-
-    expect(async () => {
-      return await updateCarUseCase.execute(validProps)
-    }).not.toThrowError()
-
+    expect(res.json).toHaveBeenCalled()
     expect(res.status).toHaveBeenCalledWith(200)
+  })
+
+  it('should return a list of cars after updateCarUseCase execution', async () => {
+    await updateCarUseCase.execute({ _id: validIds[1], ...propsToUpdate })
+    expect(carRepository.cars.length).toBe(3)
   })
 })

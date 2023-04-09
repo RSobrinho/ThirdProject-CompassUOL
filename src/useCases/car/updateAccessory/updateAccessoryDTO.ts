@@ -1,5 +1,5 @@
 export interface UpdateAccessoryDTO {
-  _idCar: string,
-  _idAccessory: string,
+  _id_car: string,
+  _id_accessory: string,
  description: string
 }

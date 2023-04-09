@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express'
-import { AuthenticationUseCase } from './authenticationUseCase'
+import { AuthenticationUserUseCase } from './authenticationUserUseCase'
 
-export class AuthenticationController {
-  constructor (private authenticationUseCase: AuthenticationUseCase) {
+export class AuthenticationUserController {
+  constructor (private authenticationUseCase: AuthenticationUserUseCase) {
   }
 
   async handle (req: Request, res: Response, next: NextFunction): Promise<void> {

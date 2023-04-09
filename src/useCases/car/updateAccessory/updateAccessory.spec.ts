@@ -1,50 +1,54 @@
-// import { describe, it, expect, vi, beforeAll } from 'vitest'
-// import { InMemoryCarRepository } from '../../../repositories/implementations/InMemory/inMemoryCarRepository'
-// import { UpdateAccessoryUseCase } from './updateAccessoryUseCase'
-// import { UpdateAccessoryController } from './updateAccessoryController'
-// import { v4 } from 'uuid'
-// import { faker } from '@faker-js/faker'
-// import { UpdateAccessoryDTO } from './updateAccessoryDTO'
-// describe('UpdateAccessoryFeature', () => {
-//   const validProps: UpdateAccessoryDTO = {
-//     _idCar: v4(),
-//     _idAccessory: v4(),
-//     description: 'Uma descrição braba
+import { describe, it, expect, vi, beforeAll } from 'vitest'
+import { InMemoryCarRepository } from '../../../repositories/implementations/InMemory/inMemoryCarRepository'
+import { UpdateAccessoryUseCase } from './updateAccessoryUseCase'
+import { UpdateAccessoryController } from './updateAccessoryController'
+import { v4 } from 'uuid'
+import { faker } from '@faker-js/faker'
+import { createCarDTO } from '../createCar/createCarDTO'
+describe('UpdateAccessoryFeature', () => {
+  const validProps: createCarDTO = {
+    model: faker.vehicle.vehicle(),
+    color: faker.color.human(),
+    year: faker.datatype.number({ min: 1950, max: (new Date()).getFullYear() }),
+    value_per_day: faker.datatype.number({ min: 20, max: 10000 }),
+    accessories: [],
+    number_of_passengers: faker.datatype.number({ min: 2, max: 10 })
+  }
 
-//   }
+  const validAccessoryIds = [v4(), v4(), v4()]
+  const validId = v4()
+  const updatedDescription = 'A new description'
+  let carRepository: InMemoryCarRepository
+  let updateAccessoryUseCase: UpdateAccessoryUseCase
+  let updateAccessoryController: UpdateAccessoryController
 
-//   let carRepository: InMemoryCarRepository
-//   let updateAccessoryUseCase: UpdateAccessoryUseCase
-//   let updateAccessoryController: UpdateAccessoryController
+  beforeAll(() => {
+    carRepository = new InMemoryCarRepository()
+    updateAccessoryUseCase = new UpdateAccessoryUseCase(carRepository)
+    updateAccessoryController = new UpdateAccessoryController(updateAccessoryUseCase)
 
-//   beforeAll(() => {
-//     carRepository = new InMemoryCarRepository()
-//     updateAccessoryUseCase = new UpdateAccessoryUseCase(carRepository)
-//     updateAccessoryController = new UpdateAccessoryController(updateAccessoryUseCase)
+    carRepository.cars.push({ ...validProps, _id: validId })
 
-//     carRepository.cars.push(validProps)
-//   })
+    for (let i = 0; i < 3; i++) {
+      carRepository.cars[0].accessories.push({ _id: validAccessoryIds[i], description: faker.lorem.words(2) })
+    }
+  })
 
-//   it('should update a car successfully and send status 200', async () => {
-//     const req: any = { params: { id: carRepository.cars[carRepository.cars.length - 1]._id }, body: { ...validProps, _id: undefined } }
-//     const res: any = {
-//       status: vi.fn().mockReturnThis(),
-//       json: vi.fn().mockReturnThis()
-//     }
+  it('should update and accessory an send response with status 200', async () => {
+    const req: any = { path: `/${validId}/accessories/${validAccessoryIds[0]}`, body: { description: updatedDescription } }
+    const res: any = {
+      json: vi.fn().mockReturnThis(),
+      status: vi.fn().mockReturnThis()
+    }
 
-//     const updatedProps = { ...validProps, color: 'black', year: 1955, value_per_day: 1000 }
+    await updateAccessoryController.handle(req, res)
 
-//     const car: any = await updateAccessoryUseCase.execute(updatedProps)
-//     await updateAccessoryController.handle(req, res)
+    expect(res.json).toHaveBeenCalled()
+    expect(res.status).toHaveBeenCalledWith(200)
+  })
 
-//     expect(car.color).toEqual(updatedProps.color)
-//     expect(car.year).toEqual(updatedProps.year)
-//     expect(car.value_per_day).toEqual(updatedProps.value_per_day)
-
-//     expect(async () => {
-//       return await updateAccessoryUseCase.execute(validProps)
-//     }).not.toThrowError()
-
-//     expect(res.status).toHaveBeenCalledWith(200)
-//   })
-// })
+  it('should return a list of cars after updateAccessoryUseCase execution', async () => {
+    await updateAccessoryUseCase.execute({ _id_car: validId, _id_accessory: validAccessoryIds[1], description: updatedDescription })
+    expect(carRepository.cars.length).toBe(1)
+  })
+})

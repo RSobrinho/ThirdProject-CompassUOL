@@ -1,66 +1,72 @@
-import { ICarEntityProps } from 'entities/interfaces/iCarEntityProps'
-import { CarEntity } from '../../../entities/implementations/car'
 import { ICarRepository } from '../../interfaces/iCarRepository'
+import { ICarEntityProps } from '../../../entities/interfaces/iCarEntityProps'
 
 export class InMemoryCarRepository implements ICarRepository {
-  public cars: ICarEntityProps[] = []
+  cars: ICarEntityProps[] = []
 
-  async save (car: CarEntity): Promise<void> {
+  async save (car: ICarEntityProps): Promise<void> {
     this.cars.push(car)
   }
 
-  async deleteById (id: string): Promise<boolean> {
-    const car = this.getById(id)
-
-    for (let index = 0; index < this.cars.length; index++) {
-      const car = this.cars[index]
-
-      if (car._id === id) {
-        this.cars = this.cars.splice(index, 1)
-        return true
-      }
-    }
-    return false
-  }
-
-  async getById (id: string): Promise<object> {
-    for (let index = 0; index < this.cars.length; index++) {
-      const car = this.cars[index]
-
-      if (car._id === id) {
-        return car
-      }
-    }
-    return {}
-  }
-
-  async updateById ({ _id, ...props }): Promise<object> {
-    if (Object.keys(props).length === 0) {
-      return {}
+  async findByData (props: ICarEntityProps): Promise<ICarEntityProps> {
+    const car = this.cars.find((c) => {
+      return Object.keys(props).every((key) => {
+        return c[key] === props[key]
+      })
+    })
+    if (car) {
+      return car
     } else {
-      const index = this.cars.findIndex(car => car._id === _id)
-
-      this.cars[index] = props
-      return this.cars[index]
+      return null
     }
   }
 
-  async findByFilter ({ limit = 10, page = 1, ...data }: {limit?: number, page?: number, data?: ICarEntityProps}): Promise<object> {
-    const props = { ...data }
+  async updateById ({ _id, ...props }): Promise<ICarEntityProps> {
+    const carIndex = this.cars.findIndex((c) => c._id === _id)
 
-    const filteredCars = this.cars.filter((car) => {
-      for (const [key, value] of Object.entries(props)) {
-        if (car[key] !== value) {
-          return false
-        }
-      }
+    if (carIndex >= 0) {
+      this.cars[carIndex] = { _id, ...props }
+      return this.cars[carIndex]
+    } else {
+      return null
+    }
+  }
+
+  async deleteById (id: string): Promise<boolean> {
+    const carIndex = this.cars.findIndex((c) => c._id === id)
+
+    if (carIndex >= 0) {
+      this.cars.splice(carIndex, 1)
       return true
+    } else {
+      return false
+    }
+  }
+
+  async findByFilter (data: { page?: number; limit?: number } & ICarEntityProps): Promise<object> {
+    let { limit, page, ...props } = data
+
+    if (!limit) {
+      limit = 10
+    }
+    if (!page) {
+      page = 1
+    }
+
+    const offset = (page - 1) * limit
+
+    const filteredCars = this.cars.filter((c) => {
+      return Object.keys(props).every((key) => {
+        return c[key] === props[key]
+      })
     })
 
     const total = filteredCars.length
     const offsets = Math.ceil(total / limit)
-    const offset = (page - 1) * limit
-    const cars = filteredCars.slice(offset, offset + limit)
+
+    const cars = filteredCars.slice(offset, offset + limit).map((c) => {
+      return c
+    })
 
     return {
       cars,

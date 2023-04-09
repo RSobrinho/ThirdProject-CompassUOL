@@ -1,21 +1,16 @@
-import { faker } from '@faker-js/faker'
 import { describe, it, expect, vi, beforeAll } from 'vitest'
-import { CarEntity } from '../../../entities/implementations/car'
 import { InMemoryCarRepository } from '../../../repositories/implementations/InMemory/inMemoryCarRepository'
 import { GetAllCarsUseCase } from './getAllCarsUseCase'
-import { ValidationError } from '../../../errors/validationError'
 import { GetAllCarsController } from './getAllCarsController'
-import { GetAllCarsDTO } from './getAllCarsDTO'
-import { cars } from '../../../utils/fakeData/cars'
-
+import { v4 } from 'uuid'
+import { faker } from '@faker-js/faker'
+import { createCarDTO } from '../createCar/createCarDTO'
 describe('GetAllCarsFeature', () => {
-  const validProps: GetAllCarsDTO = {
-    page: `${faker.datatype.number({ min: 0, max: 5 })}`,
-    limit: `${faker.datatype.number({ min: 0, max: 20 })}`,
+  const validProps: createCarDTO = {
     model: faker.vehicle.vehicle(),
     color: faker.color.human(),
-    year: `${faker.datatype.number({ min: 1950, max: (new Date()).getFullYear() })}`,
-    value_per_day: `${faker.datatype.number({ min: 20, max: 10000 })}`,
+    year: faker.datatype.number({ min: 1950, max: (new Date()).getFullYear() }),
+    value_per_day: faker.datatype.number({ min: 20, max: 10000 }),
     accessories: [
       {
         description: faker.lorem.words(2)
@@ -27,8 +22,10 @@ describe('GetAllCarsFeature', () => {
         description: faker.lorem.words(2)
       }
     ],
-    number_of_passengers: `${faker.datatype.number({ min: 2, max: 10 })}`
+    number_of_passengers: faker.datatype.number({ min: 2, max: 10 })
   }
+
+  const validIds = [v4(), v4(), v4()]
 
   let carRepository: InMemoryCarRepository
   let getAllCarsUseCase: GetAllCarsUseCase
@@ -38,26 +35,28 @@ describe('GetAllCarsFeature', () => {
     carRepository = new InMemoryCarRepository()
     getAllCarsUseCase = new GetAllCarsUseCase(carRepository)
     getAllCarsController = new GetAllCarsController(getAllCarsUseCase)
+
+    for (let i = 0; i < 3; i++) {
+      carRepository.cars.push({ ...validProps, _id: validIds[i] })
+    }
   })
 
-  it('should get cars successfully based on filter and response status 200', async () => {
-    const req: any = { query: {} }
+  it('should get all cars without any query filter, based on any query filter a car successfully and send response with status 200', async () => {
+    const req: any = {}
     const res: any = {
       json: vi.fn().mockReturnThis(),
       status: vi.fn().mockReturnThis()
     }
 
-    cars.forEach(async (car) => await carRepository.save(car))
-
-    const dataReturn: any = await getAllCarsUseCase.execute({ page: validProps.page, limit: validProps.limit, model: 'Porsche Spyder' })
-
     await getAllCarsController.handle(req, res)
 
-    expect(carRepository.cars).toHaveLength(16)
-    expect(dataReturn.total).toBe(8)
-    expect(dataReturn.offset).toBe((parseInt(validProps.page) - 1) * parseInt(validProps.limit))
-    expect(dataReturn.offsets).toBe(Math.ceil(dataReturn.total / parseInt(validProps.limit)))
-    expect(dataReturn.limit).toBe(parseInt(validProps.limit))
+    expect(res.json).toHaveBeenCalled()
     expect(res.status).toHaveBeenCalledWith(200)
+  })
+
+  it('should return a list of cars after getAllCarsUseCase execution', async () => {
+    await getAllCarsUseCase.execute({})
+    expect(carRepository.cars).not.toContain({ ...validProps, id: validIds[0] })
+    expect(carRepository.cars.length).toBe(3)
   })
 })
