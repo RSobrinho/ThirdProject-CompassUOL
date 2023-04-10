@@ -2,7 +2,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Third Project Compass.UOL",
+    "title": "Third Project Compass.UOL (Swagger dont finished, out of time, tests on college and need to deploy yet)",
     "description": "Creating a REST API for a fictional car rental company. Basically, there are users, cars, and reservations. The idea is that a user can reserve a car to use for a certain amount of time, and the API takes care of all the management, creation, and deletion of reservations, users, and cars.",
     "termsOfService": "https://www.google.com.br/search?q=N%C3%A3o+h%C3%A1+%3A%7C",
     "contact": {
@@ -463,72 +463,6 @@
               }
             },
             "email": {
-              "type": "string"
-            }
-          }
-        },
-        "Event": {
-          "type": "object",
-          "properties": {
-            "description": {
-              "type": "string"
-            },
-            "dateTime": {
-              "type": "string",
-              "format": "date-time"
-            }
-          }
-        },
-        "CompleteEvent": {
-          "type": "object",
-          "properties": {
-            "_id": {
-              "type": "string",
-              "format": "ObjectId"
-            },
-            "description": {
-              "type": "string"
-            },
-            "dateTime": {
-              "type": "string",
-              "format": "date-time"
-            },
-            "createdAt": {
-              "type": "string",
-              "format": "date-time"
-            },
-            "updatedAt": {
-              "type": "string",
-              "format": "date-time"
-            }
-          }
-        },
-        "signUpUser": {
-          "type": "object",
-          "properties": {
-            "firstName": {
-              "type": "string"
-            },
-            "lastName": {
-              "type": "string"
-            },
-            "birthDate": {
-              "type": "string",
-              "format": "date"
-            },
-            "city": {
-              "type": "string"
-            },
-            "country": {
-              "type": "string"
-            },
-            "email": {
-              "type": "string"
-            },
-            "password": {
-              "type": "string"
-            },
-            "confirmPassword": {
               "type": "string"
             }
           }
