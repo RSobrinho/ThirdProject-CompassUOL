@@ -49,6 +49,8 @@ This project is basically a car rental, where exists users, cars and reserves. B
 - And to start the application after building Typescript to Javascript, run: ```npm run start```
 - If you want just to run the application locally without creating the dist folder (with builded Javascript), just run on terminal: ```npm run dev```
 
+### URL to hosted API on AWS Elastic Beanstalk: http://thirdproject-compassuol-env.eba-5nejuyrp.sa-east-1.elasticbeanstalk.com/
+
 ### Acknowledgments
 I just wanted to give a big thanks to CompassUOL for giving me the opportunity to complete my internship as a backend developer with their amazing team!
 
