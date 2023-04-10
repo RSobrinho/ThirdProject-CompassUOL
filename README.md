@@ -1,330 +1,427 @@
-# Project Title
+# Third and Last Project for Compass UOL - Internship Program 😎
 
-This is a planner where you can organize your week and tasks the way you want it.
+## About
+This project is basically a car rental, where exists users, cars and reserves. Basically, a logged user can rent a car, creating a new reserve. The API leads with CRUDs, validation and managing of the parts.
 
-## Badges
+## Status -> In development 😃
+### 0% [=======>XX] 100%
 
-[![Npm package version](https://badgen.net/npm/v/express)](https://npmjs.com/package/express)
-[![GitHub contributors](https://img.shields.io/badge/github-gray?style=plastic&logo=github)](https://GitHub.com/RSobrinho/SegundoProjeto-CompassUOL/graphs/contributors/)
-[![TypeScript](https://img.shields.io/badge/typescript-gray?style=plastic&logo=typescript)](https://typescriptlang.org)
-[![Docker](https://img.shields.io/badge/docker-gray?style=plastic&logo=docker)](https://https://docker.com/)
-[![Npm](https://img.shields.io/badge/npm-gray?style=plastic&logo=npm)](https://https://npmjs.com/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-gray?style=plastic&logo=mongodb)](https://www.mongodb.com/)
-[![Swagger](https://img.shields.io/badge/swagger-gray?style=plastic&logo=swagger)](https://swagger.io/)
-[![Vitest](https://img.shields.io/badge/vitest-gray?style=plastic&logo=vitest)](https://vitest.dev/)
-[![Eslint](https://img.shields.io/badge/eslint-gray?style=plastic&logo=eslint)](https://eslint.org/)
-[![Prettier](https://img.shields.io/badge/prettier-gray?style=plastic&logo=prettier)](https://prettier.io/)
+## Tecnologies used/to be used (possibly 😐)
+- [X] Javascript
+- [X] Node.js + Express
+- [X] Typescript
+- [X] Eslint
+- [X] Testing - Vitest
+- [ ] Swagger (I cant finish in time)
+- [X] MongoDB
 
-## Content
+## To Be Done/Requirements
+- [X] Readability
+- [X] Private repository
+- [X] Small commits
+- [X] Commit pattern
+- [X] Express
+- [X] Readme
+- [X] Explanation of how to run locally
+- [X] Deploy the application
+- [X] Share the (repository link) with Compass Team by E-Mail
+- [X] **Implement Get Routes**
+- [X] **Implement Post Routes**
+- [X] **Implement Delete Routes**
+- [X] **Implement Patch/Update Routes**
 
-<!--ts-->
 
-- [Project Title](#project-title)
-  - [Badges](#badges)
-  - [Content](#content)
-- [Installation](#installation)
-- [Usage](#usage)
-    - [`npm i`](#npm-i)
-    - [`npm start`](#npm-start)
-    - [`npm run build`](#npm-run-build)
-- [API Documentation](#api-documentation)
-  - [SignUp user](#signup-user)
-      - [Input](#input)
-  - [SignIn user](#signin-user)
-      - [Input](#input-1)
-  - [Update user data](#update-user-data)
-      - [Input](#input-2)
-  - [Delete user account](#delete-user-account)
-  - [Forgot password](#forgot-password)
-      - [Input](#input-3)
-  - [Reset password](#reset-password)
-      - [Input](#input-4)
-  - [Create new event](#create-new-event)
-      - [Input:](#input-5)
-  - [Return all events](#return-all-events)
-  - [Return event by id](#return-event-by-id)
-  - [Return all weekday events](#return-all-weekday-events)
-  - [Return events with date range filter](#return-events-with-date-range-filter)
-  - [Delete event by id](#delete-event-by-id)
-  - [Delete event by weekday](#delete-event-by-weekday)
-- [Features](#features)
-- [Specifications](#specifications)
-    - [Get Events by Weekday Route](#get-events-by-weekday-route)
-    - [Get Events with Date Range Filter Route](#get-events-with-date-range-filter-route)
-  - [Deploy](#deploy)
+## How to reply this project
 
-<!--te-->
+### Install LTS node version on website: https://nodejs.org/en/download/
 
-# Installation
+### Setting database enviroment
+- #### (Atlas + MongoDB - Online enviroment)
+1. LogIn or SignUp on https://www.mongodb.com/atlas
+2. Create a new project as cluster
+3. Connect to the cluster -> `Connect your application`
+4. Copy the connection string
+5. Rename `.env.example` file just to `.env`
+6. Change `<Password>` field (on the connection string) to your cluster password created on atlas
 
-First you will need to install Git(https://git-scm.com). Then you can follow this steps(https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) to clone this repository.
+### To install necessary dependencies: ```npm install```
+- After all the configuration, to build the application, write on terminal: ```npm run build```
+- And to start the application after building Typescript to Javascript, run: ```npm run start```
+- If you want just to run the application locally without creating the dist folder (with builded Javascript), just run on terminal: ```npm run dev```
 
-# Usage
+### Acknowledgments
+I just wanted to give a big thanks to CompassUOL for giving me the opportunity to complete my internship as a backend developer with their amazing team!
 
-To run all this commands, you'll need to have npm and nodeJs installed. You can see how to install them here(https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
+During my time with CompassUOL and my colleagues, I had the chance to work on some really exciting projects, learn new skills, and gain valuable insights into the industry. My supervisor, Leandro, and the instructors were incredibly supportive and provided me with invaluable guidance and feedback, helping me to grow both personally and professionally. I sincerely believe that without the tips from the instructors, it would have taken me much longer to learn and develop certain skills.
 
-In the project directory, you can run:
+I can honestly say that my time at CompassUOL has been (and I hope will continue to be) the experience that has helped me evolve the most as a software engineer. I have learned so much about backend development, coding best practices, and working as part of a team.
 
-### `npm i`
+Thank you again to CompassUOL and all the people involved for this amazing opportunity, and I really hope that I can continue to work with you as a backend developer in the future 😁.
 
-to install all dependencies. And after that, run:
-
-### `npm start`
-
-to start the app. The app will start on port 8080.
-
-You can also run:
-
-### `npm run build`
-
-to compile the ts files to js.
 
 # API Documentation
 
-## SignUp user
+## SignUp/Create user
 
 ```http
-  POST /api/v1/users/signup
+  POST /api/v1/user/
 ```
 
 #### Input
 
 ```json
 {
-  "firstName": "Gabriela",
-  "lastName": "Medeiros",
-  "birthDate": "2004-05-09",
-  "city": "New York",
-  "country": "USA",
-  "email": "gabi@teste.com",
-  "password": "123",
-  "confirmPassword": "123"
+    "name": "Rafael Sobrinho",
+    "cpf": "077.998.461-78",
+    "birth": "03/07/2004",
+    "email": "rafarrsobrinho@hotmail.com",
+    "password": "Rafael123456!@#",
+    "cep": "79102060",
+    "qualified": "no"
 }
 ```
 
-| Parâmetro         | Tipo     | Descrição     |
+| Body              | Tipo     | Descrição     |
 | :---------------- | :------- | :------------ |
-| `firstName`       | `string` | **Required**. |
-| `lastName`        | `string` | **Required**. |
-| `birthDate`       | `date`   | **Required**. |
-| `city`            | `string` | **Required**. |
-| `country`         | `string` | **Required**. |
+| `name`            | `string` | **Required**. |
+| `cpf`             | `string` | **Required**. |
+| `birth`           | `string` | **Required**. |
 | `email`           | `string` | **Required**. |
 | `password`        | `string` | **Required**. |
-| `confirmPassword` | `string` | **Required**. |
+| `cep`             | `string` | **Required**. |
+| `qualified`       | `string` | **Required**. |
 
-## SignIn user
+## Get All Users | Get Users by query parameter
 
 ```http
-  POST /api/v1/users/signin
+  GET /api/v1/user/?param1=x&param2=y
+```
+
+| Parâmetros Query  | Tipo     | Descrição     |
+| :---------------- | :------- | :------------ |
+| `page`            | `string` | **Optional**. |
+| `limit`           | `string` | **Optional**. |
+| `birth`           | `string` | **Optional**. |
+| `name`            | `string` | **Optional**. |
+| `cpf`             | `string` | **Optional**. |
+| `birth`           | `string` | **Optional**. |
+| `email`           | `string` | **Optional**. |
+| `password`        | `string` | **Optional**. |
+| `cep`             | `string` | **Optional**. |
+| `qualified`       | `string` | **Optional**. |
+| `patio`           | `string` | **Optional**. |
+| `complement`      | `string` | **Optional**. |
+| `neighborhood`    | `string` | **Optional**. |
+| `locality`        | `string` | **Optional**. |
+| `uf`              | `string` | **Optional**. |
+
+
+## SignIn/LogIn/Authenticate user
+
+```http
+  POST /api/v1/user/authenticate
 ```
 
 #### Input
 
 ```json
 {
-  "email": "gabi@teste.com",
-  "password": "123"
+  "email": "rafarrsobrinho@hotmail.com",
+  "password": "Rafael123456!@#",
 }
 ```
 
-| Parâmetro  | Tipo     | Descrição     |
+| Body       | Tipo     | Descrição     |
 | :--------- | :------- | :------------ |
 | `email`    | `string` | **Required**. |
 | `password` | `string` | **Required**. |
 
-## Update user data
+## Update user by id
 
 ```http
-  PATCH /api/v1/users/
+  PATCH /api/v1/user/:id
 ```
 
 #### Input
 
 ```json
 {
-  "firstName": "Gabriela",
-  "lastName": "Medeiros",
-  "birthDate": "2004-05-09",
-  "city": "Campo Grande",
-  "country": "Brazil",
-  "email": "gabriela@teste.com"
-}
-```
-
-| Parâmetro   | Tipo     | Descrição    |
-| :---------- | :------- | :----------- |
-| `firstName` | `string` | **Optional** |
-| `lastName`  | `string` | **Optional** |
-| `birthDate` | `date`   | **Optional** |
-| `city`      | `string` | **Optional** |
-| `country`   | `string` | **Optional** |
-| `email`     | `string` | **Optional** |
-
-## Delete user account
-
-```http
-  DELETE /api/v1/users/
-```
-
-## Forgot password
-
-```http
-  POST /api/v1/users/forgotPassword
-```
-
-#### Input
-
-```json
-{
-  "email": "gabriela@teste.com"
-}
-```
-
-| Parâmetro | Tipo     | Descrição     |
-| :-------- | :------- | :------------ |
-| `email`   | `string` | **Required**. |
-
-## Reset password
-
-```http
-  POST /api/v1/users/${resetToken}
-```
-
-#### Input
-
-```json
-{
-  "password": "12345",
-  "confirmPassword": "12345"
+    "name": "Rafael Sobrinho",
+    "cpf": "077.998.461-78",
+    "birth": "03/07/2004",
+    "email": "rafarrsobrinho@hotmail.com",
+    "password": "Rafael123456!@#",
+    "cep": "79102060",
+    "qualified": "no",
+    "patio": "Rua guanabara",
+    "complement": "Muro Azul",
+    "locality": "Jardim Ima",
+    "uf": "MS"
 }
 ```
 
 | Parâmetro         | Tipo     | Descrição     |
 | :---------------- | :------- | :------------ |
-| `password`        | `string` | **Required**. |
-| `confirmPassword` | `string` | **Required**. |
+| `id`              | `string` | **Required**. |
 
-## Create new event
+| Body              | Tipo     | Descrição     |
+| :---------------- | :------- | :------------ |
+| `name`            | `string` | **Optional**. |
+| `cpf`             | `string` | **Optional**. |
+| `birth`           | `string` | **Optional**. |
+| `email`           | `string` | **Optional**. |
+| `password`        | `string` | **Optional**. |
+| `cep`             | `string` | **Optional**. |
+| `qualified`       | `string` | **Optional**. |
+| `patio`           | `string` | **Optional**. |
+| `complement`      | `string` | **Optional**. |
+| `neighborhood`    | `string` | **Optional**. |
+| `locality`        | `string` | **Optional**. |
+| `uf`              | `string` | **Optional**. |
+
+## get user by id
 
 ```http
-  POST /api/v1/events
+  GET /api/v1/user/:id
 ```
 
-#### Input:
+| Parâmetro         | Tipo     | Descrição     |
+| :---------------- | :------- | :------------ |
+| `id`              | `string` | **Required**. |
+
+## Delete user by id
+
+```http
+  DELETE /api/v1/user/:id
+```
+
+| Parâmetro         | Tipo     | Descrição     |
+| :---------------- | :------- | :------------ |
+| `id`              | `string` | **Required**. |
+
+
+## Create new car
+
+```http
+  POST /api/v1/car/
+```
+
+#### Input
 
 ```json
 {
-  "description": "event description",
-  "dayOfWeek": "friday",
-  "dateTime": "2023-05-12T21:28:12Z"
+    "model":"BMW",
+    "color":"white",
+    "year":1990,
+    "value_per_day":2802,
+    "accessories":[
+        {
+            "description":"hic culpa illo"
+        },
+        {
+            "description":"iure optio nihil"
+        }
+    ],
+    "number_of_passengers":4
 }
 ```
 
-| Parâmetro     | Tipo     | Descrição                                                                        |
-| :------------ | :------- | :------------------------------------------------------------------------------- |
-| `description` | `string` | **Required**.                                                                    |
-| `dayOfWeek`   | `string` | **Required**. (sunday, monday, tuesday, wednesday, thursday, friday or saturday) |
-| `dateTime`    | `date`   | **Required**.                                                                    |
+| Body                   | Tipo            | Descrição     |
+| :-------------------   | :-------------- | :------------ |
+| `model`                | `string`        | **Required**. |
+| `color`                | `string`        | **Required**. |
+| `year`                 | `number`        | **Required**. |
+| `value_per_day`        | `number`        | **Required**. |
+| `accessories`          | `array[object]` | **Required**. |
+| `description`          | `string`        | **Required**. |
+| `number_of_passengers` | `string`        | **Required**. |
 
-## Return all events
-
-```http
-  GET /api/v1/events
-```
-
-## Return event by id
+## Get All Cars | Get Cars by query parameter
 
 ```http
-  GET /api/v1/events/${id}
+  GET /api/v1/car/?param1=x&param2=y
 ```
 
-| Parâmetro | Tipo     | Descrição     |
-| :-------- | :------- | :------------ |
-| `id`      | `string` | **Required**. |
+| Parâmetro Query        | Tipo            | Descrição     |
+| :--------------------- | :-------------- | :------------ |
+| `page`                 | `string`        | **Optional**. |
+| `limit`                | `string`        | **Optional**. |
+| `model`                | `string`        | **Optional**. |
+| `color`                | `string`        | **Optional**. |
+| `year`                 | `number`        | **Optional**. |
+| `value_per_day`        | `number`        | **Optional**. |
+| `accessories`          | `array[object]` | **Optional**. |
+| `description`          | `string`        | **Optional**. |
+| `number_of_passengers` | `string`        | **Optional**. |
 
-## Return all weekday events
+## Update Accessory car By id
 
 ```http
-  GET /api/v1/events?dayOfWeek={dayOfTheWeek}
+  PATCH /api/v1/car/:id/accessory/:id
 ```
 
-| Parâmetro      | Tipo     | Descrição                                                                        |
-| :------------- | :------- | :------------------------------------------------------------------------------- |
-| `dayOfTheWeek` | `string` | **Required**. (sunday, monday, tuesday, wednesday, thursday, friday or saturday) |
+#### Input
 
-## Return events with date range filter
+```json
+{
+    "description": "descricao nova"
+}
+```
+
+| Parâmetro              | Tipo            | Descrição     |
+| :--------------------- | :-------------- | :------------ |
+| `id (car)`             | `string`        | **Required**. |
+| `id (accessory)`       | `string`        | **Required**. |
+
+## Update car by id
 
 ```http
-  GET /api/v1/events/filterByDate?startDate={startDate}&endDate={endDate}
+  PATCH /api/v1/car/:id
 ```
 
-| Parâmetro   | Tipo   | Descrição                                |
-| :---------- | :----- | :--------------------------------------- |
-| `startDate` | `Date` | **Optional**. (Ex: 2023-05-12T21:28:12Z) |
-| `endDate`   | `Date` | **Optional**. (Ex: 2023-05-12T21:28:12Z) |
+#### Input
 
-## Delete event by id
+```json
+{
+    "model":"BMW",
+    "color":"white",
+    "year":1990,
+    "value_per_day":2802,
+    "accessories":[
+        {
+            "description":"hic culpa illo"
+        },
+        {
+            "description":"iure optio nihil"
+        }
+    ],
+    "number_of_passengers":4
+}
+```
+
+| Parâmetro              | Tipo            | Descrição     |
+| :--------------------- | :-------------- | :------------ |
+| `id`                   | `string`        | **Required**. |
+
+| Body                   | Tipo            | Descrição     |
+| :--------------------- | :-------------- | :------------ |
+| `model`                | `string`        | **Optional**. |
+| `color`                | `string`        | **Optional**. |
+| `year`                 | `number`        | **Optional**. |
+| `value_per_day`        | `number`        | **Optional**. |
+| `accessories`          | `array[object]` | **Optional**. |
+| `description`          | `string`        | **Optional**. |
+| `number_of_passengers` | `string`        | **Optional**. |
+
+## get car by id
 
 ```http
-  DELETE /api/v1/events/${id}
+  GET /api/v1/car/:id
 ```
 
-| Parâmetro | Tipo     | Descrição     |
-| :-------- | :------- | :------------ |
-| `id`      | `string` | **Required**. |
+| Parâmetro              | Tipo            | Descrição     |
+| :--------------------- | :-------------- | :------------ |
+| `id`                   | `string`        | **Required**. |
 
-## Delete event by weekday
+## Delete car by id
 
 ```http
-  DELETE /api/v1/events?dayOfWeek={dayOfTheWeek}
+  DELETE /api/v1/car/:id
 ```
 
-| Parâmetro      | Tipo     | Descrição                                                                        |
-| :------------- | :------- | :------------------------------------------------------------------------------- |
-| `dayOfTheWeek` | `string` | **Required**. (sunday, monday, tuesday, wednesday, thursday, friday or saturday) |
+| Parâmetro              | Tipo            | Descrição     |
+| :--------------------- | :-------------- | :------------ |
+| `id`                   | `string`        | **Required**. |
 
-# Features
 
-- [x] User sign up Route
-- [x] User sign in Route
-- [x] Update user data Route
-- [x] Delete user account Route
-- [x] Forgot password Route
-- [x] Reset Password Route
-- [x] Create new event Route
-- [x] Get all events Route
-- [x] Get event by id Route
-- [x] Get event by weekday Route
-- [x] Get events with date range filter Route
-- [x] Delete event by id Route
-- [x] Delete event by weekday Route
+## Create new reserve
 
-# Specifications
-
-### Get Events by Weekday Route
-
-- In this route the weekday is passed as a query param, there's a validation to see if there is a query param, otherwise it will call the getAll method.
-
-### Get Events with Date Range Filter Route
-
-- In this route, two dates can be passed by the query params:
-- startDate: Will get the events that happens after of durign that dateTime
-- endDate: Will get the events that happens before of durign that dateTime
-- Both startDate and endDate are optional, meaning you can pass one or both of the params in the query
-
-## Deploy
-
-- It was deployed using AWS EC2
-- URL: http://44.203.14.175:3000
-
-```code
-  //start server
-  pm2 start deploy_planner
-
-  //stop server
-  pm2 stop deploy_planner
-
-  //restart server
-  pm2 restart deploy_planner
+```http
+  POST /api/v1/reserve/
 ```
+
+#### Input
+
+```json
+{
+    "start_date": "10/11/2023",
+    "end_date": "20/11/2023",
+    "_id_car": "e7c44951-b512-4ff4-8847-e0d8e58c4e58"
+}
+```
+
+| Body                   | Tipo            | Descrição     |
+| :-------------------   | :-------------- | :------------ |
+| `start_date`           | `string`        | **Required**. |
+| `end_date`             | `string`        | **Required**. |
+| `_id_car`              | `string`        | **Required**. |
+
+## Get All Reserves | Get Reserves by query parameter
+
+```http
+  GET /api/v1/reserve/?param1=x&param2=y
+```
+
+| Parâmetro Query        | Tipo            | Descrição     |
+| :--------------------- | :-------------- | :------------ |
+| `page`                 | `string`        | **Optional**. |
+| `limit`                | `string`        | **Optional**. |
+| `start_date`           | `string`        | **Optional**. |
+| `end_date`             | `string`        | **Optional**. |
+| `_id`                  | `string`        | **Optional**. |
+| `_id_user`             | `string`        | **Optional**. |
+| `_id_car`              | `string`        | **Optional**. |
+| `final_value`          | `string`        | **Optional**. |
+
+
+## Update reserve by id
+
+```http
+  PATCH /api/v1/reserve/:id
+```
+
+#### Input
+
+```json
+{
+    "start_date": "10/11/2023",
+    "end_date": "20/11/2023",
+    "_id_car": "e7c44951-b512-4ff4-8847-e0d8e58c4e58",
+    "_id_user": "45644951-b512-4ff4-8847-e0d8e58c4123",
+    "final_value": 10000
+}
+```
+
+| Parâmetro              | Tipo            | Descrição     |
+| :--------------------- | :-------------- | :------------ |
+| `id`                   | `string`        | **Required**. |
+
+| Body                   | Tipo            | Descrição     |
+| :--------------------- | :-------------- | :------------ |
+| `start_date`           | `string`        | **Optional**. |
+| `end_date`             | `string`        | **Optional**. |
+| `_id_user`             | `string`        | **Optional**. |
+| `_id_car`              | `string`        | **Optional**. |
+| `final_value`          | `number`        | **Optional**. |
+
+## get reserve by id
+
+```http
+  GET /api/v1/reserve/:id
+```
+
+| Parâmetro              | Tipo            | Descrição     |
+| :--------------------- | :-------------- | :------------ |
+| `id`                   | `string`        | **Required**. |
+
+## Delete reserve by id
+
+```http
+  DELETE /api/v1/reserve/:id
+```
+
+| Parâmetro              | Tipo            | Descrição     |
+| :--------------------- | :-------------- | :------------ |
+| `id`                   | `string`        | **Required**. |
+
+
