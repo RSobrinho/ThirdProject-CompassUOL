@@ -16,22 +16,16 @@ class App {
     config()
 
     this.express = express()
-    this.settings()
     this.middlewares()
     this.database()
     this.routes()
     this.errorMiddlewares()
   }
 
-  private settings () {
-    // this.express.set('view engine', 'pug')
-    // this.express.set('views', join(__dirname, 'views'))
-  }
-
   private middlewares () {
     this.express.use(express.json())
     this.express.use(express.static(join(__dirname, 'public')))
-    this.express.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
+    this.express.use('/api/v1/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
   }
 
   private errorMiddlewares () {

@@ -2,8 +2,8 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Terceiro projeto Compass.UOL",
-    "description": "a fazer",
+    "title": "Third Project Compass.UOL",
+    "description": "Creating a REST API for a fictional car rental company. Basically, there are users, cars, and reservations. The idea is that a user can reserve a car to use for a certain amount of time, and the API takes care of all the management, creation, and deletion of reservations, users, and cars.",
     "termsOfService": "https://www.google.com.br/search?q=N%C3%A3o+h%C3%A1+%3A%7C",
     "contact": {
       "name": "Rafael Sobrinho",
@@ -15,12 +15,536 @@
     "servers": [
       {
         "url": "http://localhost:8080/api/v1/",
-        "description": "URL para testar API localmente "
+        "description": "URL to test locally"
       },
       {
-        "url": "http://firstprojectcompassuol-env.eba-epngbm5y.sa-east-1.elasticbeanstalk.com/api/v1/",
-        "description": "URL da API hospedada no AWS Elastic Beanstalk"
+        "url": "URLDOAWSFUTURO",
+        "description": "URL hosted on AWS Elastic Beanstalk"
       }
-    ]
+    ],
+    "paths": {
+      "/car": {
+        "get": {
+          "summary": "Car listing",
+          "description": "Route responsible for listing cars, based on query filter, ",
+          "tags": ["Cars"],
+          "parameters": [
+            {
+              "name": "page",
+              "in": "query",
+              "description": "The actual page of cars listing"
+            },
+            {
+              "name": "limit",
+              "in": "query",
+              "description": "The limit of cars for each page"
+            },
+            {
+              "name": "_id",
+              "in": "query",
+              "description": "The car _id passed by query"
+            },
+            {
+              "name": "model",
+              "in": "query",
+              "description": "The car model"
+            },
+            {
+              "name": "color",
+              "in": "query",
+              "description": "The car color"
+            },
+            {
+              "name": "year",
+              "in": "query",
+              "description": "The car year"
+            },
+            {
+              "name": "value_per_day",
+              "in": "query",
+              "description": "The cost to rent this car in one day"
+            },
+            {
+              "name": "accessories",
+              "in": "query",
+              "description": "The things that are in the car"
+            },
+            {
+              "name": "number_of_passengers",
+              "in": "query",
+              "description": "The amount of people that fits on this car"
+            }
+          ],
+            "responses": {
+              "400": {
+                "description": "ValidationError -> Accessories cannot be equal"
+              },
+              "201": {
+                "description": "Car created successfully"
+              }
+            }
+        },
+        "post": {
+          "summary": "Car creation",
+          "description": "Route responsible for creating cars in the API.",
+          "tags": ["Cars"],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Car"
+                  },
+                  "examples": {
+                    "car": {
+                      "value": {
+                        "model":"BMW",
+                        "color":"white",
+                        "year":2010,
+                        "value_per_day":2800,
+                        "accessories":[
+                            {
+                                "description":"hic culpa illo"
+                            },
+                            {
+                                "description":"iure optio nihil"
+                            },
+                            {
+                                "description":"id sunt at"
+                            },
+                            {
+                                "description":"id sunt at"
+                            }
+                        ],
+                        "number_of_passengers":4
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "responses": {
+              "400": {
+                "description": "ValidationError -> Accessories cannot be equal"
+              },
+              "201": {
+                "description": "Car created successfully",
+                "content": {
+                  "application/json":{
+                    "schema": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Event"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/car/{id}": {
+          "get": {
+            "summary": "Car getting by id",
+            "description": "Route responsible for get the car by id in the API.",
+            "tags": ["Cars"],
+            "parameters": [
+              {
+                "name":"id",
+                "in": "path",
+                "description": "The car id",
+                "required": true
+              }
+            ],
+            "responses": {
+              "404": {
+                "description": "car with this id not found."
+              },
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json":{
+                    "schema": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/CompleteEvent"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "patch": {
+            "summary": "Car updating by id",
+            "description": "Route responsible for update the car by id in the API.",
+            "tags": ["Cars"],
+            "parameters": [
+              {
+                "name":"id",
+                "in": "path",
+                "description": "The car id",
+                "required": true
+              }
+            ],
+            "requestBody": {
+              "content": {
+                "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Car"
+                  },
+                  "examples": {
+                    "car": {
+                      "value": {
+                        "model":"BMW",
+                        "color":"white",
+                        "year":2010,
+                        "value_per_day":2800,
+                        "accessories":[
+                            {
+                                "description":"hic culpa illo"
+                            },
+                            {
+                                "description":"iure optio nihil"
+                            },
+                            {
+                                "description":"id sunt at"
+                            },
+                            {
+                                "description":"id sunt at"
+                            }
+                        ],
+                        "number_of_passengers":4
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "responses": {
+              "404": {
+                "description": "NotFoundError"
+              },
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json":{
+                    "schema": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/CompleteEvent"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "delete": {
+            "summary": "Car deletion by id",
+            "description": "Route responsible to delete the car by id in the API.",
+            "tags": ["Cars"],
+            "parameters": [
+              {
+                "name":"id",
+                "in": "path",
+                "description": "The car id",
+                "required": true
+              }
+            ],
+            "responses": {
+              "404": {
+                "description": "NotFoundError"
+              },
+              "204": {
+              }
+            }
+          },
+        "/car/{id}/accessories/{id}": {
+          "patch": {
+            "summary": "Car accessory updating by id",
+            "description": "Route responsible for update the accessory in the API. On url path, its passed the car id, and the accessory id",
+            "tags": ["Cars"],
+            "parameters": [
+              {
+                "name":"id",
+                "in": "path",
+                "description": "The car accessory id",
+                "required": true
+              }
+            ],
+            "requestBody": {
+              "content": {
+                "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Car"
+                  },
+                  "examples": {
+                    "car": {
+                      "value": {
+                        "model":"BMW",
+                        "color":"white",
+                        "year":2010,
+                        "value_per_day":2800,
+                        "accessories":[
+                            {
+                                "description":"hic culpa illo"
+                            },
+                            {
+                                "description":"iure optio nihil"
+                            },
+                            {
+                                "description":"id sunt at"
+                            },
+                            {
+                                "description":"id sunt at"
+                            }
+                        ],
+                        "number_of_passengers":4
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "responses": {
+              "400": {
+                "description": "ValidationError"
+              },
+              "404": {
+                "description": "car with this id not found."
+              },
+              "200": {
+                "description": "Success",
+                "content": {
+                  "application/json":{
+                    "schema": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/CompleteEvent"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/users": {
+        "post": {
+          "summary": "User creation/signUp",
+          "description": "Route responsible for creating users in the API.",
+          "tags": ["Users"],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/signUpUser"
+                  },
+                  "examples": {
+                    "event": {
+                      "value": {
+                        "name": "Rafael Sobrinho",
+                        "cpf": "077.998.461-78",
+                        "birth": "03/07/2004",
+                        "email": "rafael.sobrinho.pb@compasso.com.br",
+                        "password": "Rafael123!@#",
+                        "cep": "79102050",
+                        "qualified": "yes"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "responses": {
+              "409": {
+                "description": "AlreadyOnBaseError"
+              },
+              "400": {
+                "description": "ValidationError | ZodValidationError"
+              },
+              "200": {
+                "description": "User created successfully",
+                "content": {
+                  "application/json":{
+                    "schema": {
+                      "$ref": "#/components/schemas/CreateUser"
+                    }
+                  }
+                }
+              }
+            }
+          }
+      },
+      "/users/signIn": {
+        "post": {
+          "summary": "User login/authenticate",
+          "description": "Route responsible for authenticating/logIn an existing user in the API.",
+          "tags": ["Users"],
+          "requestBody": {
+            "content": {
+              "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/signUpUser"
+                }
+              }
+            }
+          },
+          "responses": {
+            "401": {
+              "description": "LogInUser Validation Failed"
+            },
+            "400": {
+              "description": "Unexpected Error (Catch block on controller)"
+            },
+            "200": {
+              "description": "User successfully logged in"
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "CreateUser": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "cpf": {
+              "type": "string",
+              "pattern": "000.000.000-00"
+            },
+            "birth": {
+              "type": "string",
+              "pattern": "00/00/0000"
+            },
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "cep": {
+              "type": "string"
+            },
+            "qualified": {
+              "type": "string",
+              "pattern": "yes | no"
+            }
+          }
+        },
+        "LogInUser": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            }
+          }
+        },
+        "CreateCar": {
+          "type": "object",
+          "properties": {
+            "model": {
+              "type": "string"
+            },
+            "color": {
+              "type": "string"
+            },
+            "year": {
+              "type": "number"
+            },
+            "value_per_day": {
+              "type": "number"
+            },
+            "accessories": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "email": {
+              "type": "string"
+            }
+          }
+        },
+        "Event": {
+          "type": "object",
+          "properties": {
+            "description": {
+              "type": "string"
+            },
+            "dateTime": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "CompleteEvent": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "format": "ObjectId"
+            },
+            "description": {
+              "type": "string"
+            },
+            "dateTime": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "createdAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "updatedAt": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "signUpUser": {
+          "type": "object",
+          "properties": {
+            "firstName": {
+              "type": "string"
+            },
+            "lastName": {
+              "type": "string"
+            },
+            "birthDate": {
+              "type": "string",
+              "format": "date"
+            },
+            "city": {
+              "type": "string"
+            },
+            "country": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "confirmPassword": {
+              "type": "string"
+            }
+          }
+        },
+        "signInUser": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
 
   }
