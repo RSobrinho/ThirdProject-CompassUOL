@@ -1,4 +1,4 @@
-# First Project for Compass UOL - Internship Program 😎
+# Third and Last Project for Compass UOL - Internship Program 😎
 
 ## About
 This project is basically a car rental, where exists users, cars and reserves. Basically, a logged user can rent a car, creating a new reserve. The API leads with CRUDs, validation and managing of the parts.
@@ -12,7 +12,7 @@ This project is basically a car rental, where exists users, cars and reserves. B
 - [X] Typescript
 - [X] Eslint
 - [X] Testing - Vitest
-- [ ] Swagger
+- [ ] Swagger (I cant finish in time)
 - [X] MongoDB
 
 ## To Be Done/Requirements
